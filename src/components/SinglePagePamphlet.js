@@ -814,10 +814,77 @@ const SinglePagePamphlet = () => {
       },
       tooltip: {
         enabled: true,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        padding: 12,
-        titleFont: { size: 13, weight: 'bold' },
-        bodyFont: { size: 12, weight: 'bold' }
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        padding: 16,
+        titleFont: { size: 14, weight: 'bold' },
+        bodyFont: { size: 13 },
+        callbacks: {
+          title: function(context) {
+            return context[0].label;
+          },
+          label: function(context) {
+            const datasetLabel = context.dataset.label;
+            const specialty = context.label;
+            const percentage = context.parsed.y;
+
+            // Map abbreviated names to full names
+            const specialtyMap = {
+              'NPs': 'Nurse Practitioners',
+              'FPs': 'Family Medicine',
+              'IMs': 'Internal Medicine',
+              'OBGYNs': 'OBGYNs',
+              'Peds': 'Pediatricians',
+              'PAs': 'Physician Associates'
+            };
+
+            const fullSpecialty = specialtyMap[specialty] || specialty;
+
+            // Get detailed data if available
+            const detailedData = {
+              'Nurse Practitioners': { total: 43936, stable: 22861, increases: 9828, decreases: 11247 },
+              'Family Medicine': { total: 52390, stable: 34847, increases: 7312, decreases: 10231 },
+              'Internal Medicine': { total: 52755, stable: 33764, increases: 8869, decreases: 10122 },
+              'OBGYNs': { total: 20289, stable: 13785, increases: 3345, decreases: 3159 },
+              'Pediatricians': { total: 28212, stable: 19871, increases: 3841, decreases: 4500 },
+              'Physician Associates': { total: 22974, stable: 11911, increases: 5566, decreases: 5497 }
+            };
+
+            const data = detailedData[fullSpecialty];
+
+            if (data) {
+              const count = datasetLabel.includes('Stable') ? data.stable :
+                           datasetLabel.includes('Increases') ? data.increases :
+                           datasetLabel.includes('Decreases') ? data.decreases : 0;
+
+              return [
+                `${datasetLabel}: ${percentage}%`,
+                `${count.toLocaleString()} clinicians`,
+                `Out of ${data.total.toLocaleString()} total ${fullSpecialty.toLowerCase()}`
+              ];
+            }
+
+            return `${datasetLabel}: ${percentage}%`;
+          },
+          footer: function(context) {
+            const specialty = context[0].label;
+            const specialtyMap = {
+              'NPs': 'Nurse Practitioners',
+              'FPs': 'Family Medicine',
+              'IMs': 'Internal Medicine',
+              'OBGYNs': 'OBGYNs',
+              'Peds': 'Pediatricians',
+              'PAs': 'Physician Associates'
+            };
+            const fullSpecialty = specialtyMap[specialty] || specialty;
+
+            if (fullSpecialty === 'Pediatricians') {
+              return '\nHighest stability rate (70%)';
+            } else if (fullSpecialty === 'Nurse Practitioners') {
+              return '\nHighest volatility (26% decreases)';
+            }
+            return '';
+          }
+        }
       },
       datalabels: {
         display: true,
@@ -871,10 +938,42 @@ const SinglePagePamphlet = () => {
       },
       tooltip: {
         enabled: true,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        padding: 12,
-        titleFont: { size: 13, weight: 'bold' },
-        bodyFont: { size: 12, weight: 'bold' }
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        padding: 16,
+        titleFont: { size: 14, weight: 'bold' },
+        bodyFont: { size: 13 },
+        callbacks: {
+          title: function(context) {
+            return context[0].label;
+          },
+          label: function(context) {
+            const label = context.label;
+            const value = context.parsed;
+            const total = 220556;
+            const count = Math.round((value / 100) * total);
+
+            // Calculate actual counts based on research data
+            const actualCounts = {
+              'Stable Volume': 137039,
+              'Major Increases': 38761,
+              'Major Decreases': 44756
+            };
+
+            const actualCount = actualCounts[label] || count;
+            const percentage = ((actualCount / total) * 100).toFixed(1);
+
+            return [
+              `${actualCount.toLocaleString()} clinicians`,
+              `${percentage}% of all primary care clinicians`,
+              ``,
+              label === 'Stable Volume' ?
+                'Maintained ±90% of baseline enrollee volume' :
+              label === 'Major Increases' ?
+                'Experienced >90% increase from baseline' :
+                'Experienced >90% decrease from baseline'
+            ];
+          }
+        }
       },
       datalabels: {
         display: true,
@@ -1103,6 +1202,54 @@ const SinglePagePamphlet = () => {
 
     const stackedOptions = {
       ...detailedChartOptions,
+      plugins: {
+        ...detailedChartOptions.plugins,
+        tooltip: {
+          enabled: true,
+          backgroundColor: 'rgba(0, 0, 0, 0.9)',
+          padding: 16,
+          titleFont: { size: 14, weight: 'bold' },
+          bodyFont: { size: 13 },
+          callbacks: {
+            title: function(context) {
+              return context[0].label;
+            },
+            label: function(context) {
+              const volumeCategory = context.dataset.label;
+              const specialty = context.label;
+              const percentage = context.parsed.y;
+
+              const specialtyTotals = {
+                'Nurse Practitioners': 43936,
+                'Family Medicine': 52390,
+                'Internal Medicine': 52755,
+                'OBGYNs': 20289,
+                'Pediatricians': 28212,
+                'Physician Associates': 22974
+              };
+
+              const total = specialtyTotals[specialty];
+              const clinicianCount = Math.round((percentage / 100) * total);
+
+              return [
+                `${volumeCategory}: ${percentage}%`,
+                `Approximately ${clinicianCount.toLocaleString()} clinicians`,
+                `Out of ${total.toLocaleString()} total ${specialty.toLowerCase()}`
+              ];
+            },
+            footer: function(context) {
+              const specialty = context[0].label;
+
+              if (specialty === 'Pediatricians') {
+                return '\n72% had 100+ enrollees - highest volume';
+              } else if (specialty === 'Physician Associates' || specialty === 'Nurse Practitioners') {
+                return '\nHigher proportion in low-volume categories';
+              }
+              return '';
+            }
+          }
+        }
+      },
       scales: {
         ...detailedChartOptions.scales,
         x: { ...detailedChartOptions.scales.x, stacked: true },
@@ -1234,6 +1381,69 @@ const SinglePagePamphlet = () => {
       },
       plugins: {
         ...detailedChartOptions.plugins,
+        tooltip: {
+          enabled: true,
+          backgroundColor: 'rgba(0, 0, 0, 0.9)',
+          padding: 16,
+          titleFont: { size: 14, weight: 'bold' },
+          bodyFont: { size: 13 },
+          callbacks: {
+            title: function(context) {
+              const specialtyMap = {
+                'Peds': 'Pediatricians',
+                'OBGYNs': 'OBGYNs',
+                'Family Med': 'Family Medicine',
+                'Internal Med': 'Internal Medicine',
+                'NPs': 'Nurse Practitioners',
+                'PAs': 'Physician Associates'
+              };
+              return specialtyMap[context[0].label] || context[0].label;
+            },
+            label: function(context) {
+              const volumeCategory = context.dataset.label;
+              const specialty = context.label;
+              const percentage = context.parsed.y;
+
+              const specialtyMap = {
+                'Peds': 'Pediatricians',
+                'OBGYNs': 'OBGYNs',
+                'Family Med': 'Family Medicine',
+                'Internal Med': 'Internal Medicine',
+                'NPs': 'Nurse Practitioners',
+                'PAs': 'Physician Associates'
+              };
+
+              const specialtyTotals = {
+                'Pediatricians': 28212,
+                'OBGYNs': 20289,
+                'Family Medicine': 52390,
+                'Internal Medicine': 52755,
+                'Nurse Practitioners': 43936,
+                'Physician Associates': 22974
+              };
+
+              const fullSpecialty = specialtyMap[specialty];
+              const total = specialtyTotals[fullSpecialty];
+              const clinicianCount = Math.round((percentage / 100) * total);
+
+              return [
+                `${volumeCategory}: ${percentage}%`,
+                `Approximately ${clinicianCount.toLocaleString()} clinicians`,
+                `Out of ${total.toLocaleString()} total ${fullSpecialty.toLowerCase()}`
+              ];
+            },
+            footer: function(context) {
+              const specialty = context[0].label;
+
+              if (specialty === 'Peds') {
+                return '\nHighest volume category (72% with 100+ enrollees)';
+              } else if (specialty === 'NPs' || specialty === 'PAs') {
+                return '\nHigher proportion in lower volume categories';
+              }
+              return '';
+            }
+          }
+        },
         datalabels: { display: false }
       }
     };

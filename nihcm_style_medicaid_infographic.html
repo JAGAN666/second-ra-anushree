@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIHCM-Style Medicaid Participation Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        .newsletter-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* NIHCM Header Style */
+        .header {
+            background: #1e3a8a;
+            color: white;
+            padding: 40px 30px 30px;
+            position: relative;
+        }
+
+        .nihcm-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .newsletter-title {
+            font-family: 'Merriweather', serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            line-height: 1.3;
+            margin: 20px 0 10px;
+        }
+
+        .issue-info {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Content Sections */
+        .content-wrapper {
+            padding: 0;
+        }
+
+        .section {
+            padding: 50px 40px;
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #1e3a8a;
+            width: 100%;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: #1e3a8a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .section-title {
+            font-family: 'Merriweather', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+
+        /* Key Statistics Display */
+        .key-stats {
+            background: #f8fafc;
+            border-left: 4px solid #1e3a8a;
+            padding: 40px;
+            margin: 40px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 160px;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-description {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* Data Visualization */
+        .chart-container {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Merriweather', serif;
+            width: 100%;
+        }
+
+        .chart-container canvas {
+            max-width: 100%;
+            height: auto !important;
+            margin: 0 auto;
+        }
+
+        /* Professional Text Styling */
+        .body-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #374151;
+            margin-bottom: 25px;
+            text-align: justify;
+            max-width: 100%;
+        }
+
+        .highlight-text {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .key-finding {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 0 12px 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .key-finding-title {
+            font-weight: 700;
+            color: #065f46;
+            margin-bottom: 10px;
+        }
+
+        /* Specialty Breakdown */
+        .specialty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+            align-items: stretch;
+            justify-items: center;
+        }
+
+        .specialty-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px;
+        }
+
+        .specialty-card:hover {
+            border-color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        .specialty-name {
+            font-weight: 600;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .specialty-percentage {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 5px;
+        }
+
+        .specialty-percentage.decrease {
+            color: #dc2626;
+        }
+
+        .specialty-percentage.stable {
+            color: #d97706;
+        }
+
+        .specialty-change {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Policy Implications */
+        .implications-section {
+            background: #1e3a8a;
+            color: white;
+            padding: 40px 30px;
+        }
+
+        .implications-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .implications-list li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #fbbf24;
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .implications-list li::before {
+            content: "▶";
+            position: absolute;
+            left: 20px;
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+        /* Methodology Box */
+        .methodology {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .methodology-title {
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .methodology-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #475569;
+        }
+
+        /* Footer */
+        .footer {
+            background: #334155;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .authors {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .institution {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .citation {
+            font-size: 0.85rem;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin: 20px 0 10px;
+            width: 100%;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            border-radius: 4px;
+            transition: width 2s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 0;
+            }
+            
+            .newsletter-container {
+                margin: 0 10px;
+                border-radius: 0;
+            }
+            
+            .newsletter-title {
+                font-size: 1.8rem;
+                line-height: 1.2;
+            }
+            
+            .section {
+                padding: 30px 25px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .specialty-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .chart-container {
+                padding: 25px;
+                margin: 25px 0;
+            }
+            
+            .key-stats {
+                padding: 25px;
+                margin: 25px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section {
+                padding: 20px 15px;
+            }
+            
+            .header {
+                padding: 30px 20px 25px;
+            }
+            
+            .newsletter-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .counter {
+            animation: countUp 2s ease-out;
+        }
+
+        @keyframes countUp {
+            from { transform: scale(0.8); opacity: 0.5; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="newsletter-container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="nihcm-logo">NIHCM FOUNDATION</div>
+            <h1 class="newsletter-title">Primary Care Clinicians' Medicaid Participation: A Longitudinal Analysis</h1>
+            <div class="issue-info">Research Brief • September 2025 • Healthcare Workforce Analysis</div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Executive Summary -->
+            <div class="section fade-in">
+                <div class="section-header">
+                    <div class="section-icon">📋</div>
+                    <h2 class="section-title">Executive Summary</h2>
+                </div>
+                
+                <p class="body-text">
+                    This comprehensive longitudinal study examines how primary care clinicians' engagement with Medicaid evolved from 2016 to 2019, tracking <span class="highlight-text">220,665 clinicians</span> across 40 states. The analysis reveals significant volatility in Medicaid participation patterns, with important implications for healthcare access and policy.
+                </p>
+
+                <div class="key-stats">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number counter">220,665</span>
+                            <div class="stat-label">Clinicians Analyzed</div>
+                            <div class="stat-description">Primary care providers across 40 states</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number counter">4</span>
+                            <div class="stat-label">Year Study Period</div>
+                            <div class="stat-description">Longitudinal tracking 2016-2019</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number counter">40</span>
+                            <div class="stat-label">States Included</div>
+                            <div class="stat-description">Comprehensive geographic coverage</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number counter">90%</span>
+                            <div class="stat-label">Change Threshold</div>
+                            <div class="stat-description">Definition for major participation changes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Findings -->
+            <div class="section fade-in">
+                <div class="section-header">
+                    <div class="section-icon">🔍</div>
+                    <h2 class="section-title">Key Findings</h2>
+                </div>
+
+                <div class="key-finding">
+                    <div class="key-finding-title">Participation Volatility is Significant</div>
+                    <p>Nearly 40% of clinicians experienced major changes in Medicaid participation, challenging assumptions about provider network stability.</p>
+                </div>
+
+                <div class="chart-container">
+                    <h3 class="chart-title">Overall Participation Pattern Distribution</h3>
+                    <canvas id="participationChart" width="400" height="200"></canvas>
+                </div>
+
+                <p class="body-text">
+                    The study reveals that <span class="highlight-text">60% of clinicians maintained stable enrollee volumes</span>, while approximately 20% experienced substantial increases and 20% saw major decreases in their Medicaid patient loads over the three-year period.
+                </p>
+            </div>
+
+            <!-- Specialty Analysis -->
+            <div class="section fade-in">
+                <div class="section-header">
+                    <div class="section-icon">👩‍⚕️</div>
+                    <h2 class="section-title">Specialty-Specific Patterns</h2>
+                </div>
+
+                <div class="specialty-grid">
+                    <div class="specialty-card">
+                        <div class="specialty-name">Nurse Practitioners</div>
+                        <div class="specialty-percentage decrease">26%</div>
+                        <div class="specialty-change">Major Decreases</div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 26%; background: #dc2626;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card">
+                        <div class="specialty-name">Physician Associates</div>
+                        <div class="specialty-percentage">24%</div>
+                        <div class="specialty-change">Major Increases</div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 24%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card">
+                        <div class="specialty-name">Pediatricians</div>
+                        <div class="specialty-percentage stable">70%</div>
+                        <div class="specialty-change">Stable Participation</div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 70%; background: #d97706;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card">
+                        <div class="specialty-name">OB/GYN Specialists</div>
+                        <div class="specialty-percentage stable">68%</div>
+                        <div class="specialty-change">Stable Participation</div>
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 68%; background: #d97706;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 class="chart-title">Stability by Baseline Patient Volume</h3>
+                    <canvas id="baselineChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Predictive Factors -->
+            <div class="section fade-in">
+                <div class="section-header">
+                    <div class="section-icon">📈</div>
+                    <h2 class="section-title">Predictive Factors</h2>
+                </div>
+
+                <div class="key-finding">
+                    <div class="key-finding-title">Higher Baseline Volume = Greater Stability</div>
+                    <p>Clinicians serving more than 100 Medicaid patients initially were significantly more likely to maintain consistent participation levels throughout the study period.</p>
+                </div>
+
+                <div class="key-finding">
+                    <div class="key-finding-title">Community Health Centers Show Resilience</div>
+                    <p>Affiliation with Community Health Centers was consistently associated with greater participation stability and higher odds of increases across all specialties.</p>
+                </div>
+
+                <div class="key-finding">
+                    <div class="key-finding-title">Rural Areas Face Greater Challenges</div>
+                    <p>Rural practice settings were linked to higher odds of major decreases in Medicaid participation, highlighting geographic disparities in access.</p>
+                </div>
+            </div>
+
+            <!-- Methodology -->
+            <div class="section fade-in">
+                <div class="section-header">
+                    <div class="section-icon">⚙️</div>
+                    <h2 class="section-title">Methodology</h2>
+                </div>
+
+                <div class="methodology">
+                    <div class="methodology-title">Data Sources & Analysis</div>
+                    <div class="methodology-text">
+                        This study utilized longitudinal data from the Transformed Medicaid Statistical Information System Analytic Files (T-MSIS TAF) combined with National Plan and Provider Enumeration System (NPPES) data. The analysis tracked changes in the number of unique Medicaid enrollees served annually by individual clinicians, with major changes defined as increases or decreases exceeding 90% of baseline enrollee volume from 2016.
+                    </div>
+                </div>
+
+                <div class="methodology">
+                    <div class="methodology-title">Statistical Approach</div>
+                    <div class="methodology-text">
+                        Multivariable logistic regression models were employed to identify characteristics associated with major increases or decreases in participation, controlling for clinician demographics, practice characteristics, and state-level policy factors. Models were stratified by specialty and profession to capture heterogeneity in practice patterns.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy Implications -->
+        <div class="implications-section fade-in">
+            <div class="section-header" style="border-color: #fbbf24;">
+                <div class="section-icon" style="background: #fbbf24; color: #1e3a8a;">📋</div>
+                <h2 class="section-title" style="color: white;">Policy Implications</h2>
+            </div>
+
+            <ul class="implications-list">
+                <li>Medicaid participation is more volatile than previously understood, requiring continuous monitoring and adaptive policies</li>
+                <li>Community Health Centers should be prioritized in managed care contracting strategies due to their demonstrated stability</li>
+                <li>Rural areas need targeted workforce retention programs to address higher participation volatility</li>
+                <li>Provider network adequacy standards should account for participation fluctuations beyond simple provider counts</li>
+                <li>Proposed Medicaid funding cuts could exacerbate existing participation instability, particularly affecting vulnerable populations</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="authors">Mandar Bodas, PhD • Qian Luo, MPH • Anushree Vichare, PhD</div>
+            <div class="institution">Fitzhugh Mullan Institute for Health Workforce Equity<br>Milken Institute of Public Health, George Washington University</div>
+            <div class="citation">International Journal of Environmental Research and Public Health, 2025, 22(9), 1339</div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize animations and charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate sections on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Initialize charts
+            initializeCharts();
+            
+            // Animate counters
+            animateCounters();
+
+            // Animate progress bars
+            setTimeout(() => {
+                document.querySelectorAll('.progress-fill').forEach(bar => {
+                    bar.style.width = bar.style.width || '0%';
+                });
+            }, 1000);
+        });
+
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const text = counter.textContent;
+                const number = parseInt(text.replace(/,/g, ''));
+                if (!isNaN(number)) {
+                    let current = 0;
+                    const increment = number / 50;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= number) {
+                            counter.textContent = number.toLocaleString();
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.floor(current).toLocaleString();
+                        }
+                    }, 40);
+                }
+            });
+        }
+
+        function initializeCharts() {
+            // Participation Distribution Chart
+            const participationCtx = document.getElementById('participationChart');
+            if (participationCtx) {
+                new Chart(participationCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Stable Participation (60%)', 'Major Increase (20%)', 'Major Decrease (20%)'],
+                        datasets: [{
+                            data: [60, 20, 20],
+                            backgroundColor: ['#d97706', '#059669', '#dc2626'],
+                            borderWidth: 0,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        aspectRatio: 2,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 20,
+                                    font: { family: 'Source Sans Pro', size: 12 }
+                                }
+                            }
+                        },
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeInOutCubic'
+                        }
+                    }
+                });
+            }
+
+            // Baseline Volume Chart
+            const baselineCtx = document.getElementById('baselineChart');
+            if (baselineCtx) {
+                new Chart(baselineCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['1-10 Patients', '11-50 Patients', '51-100 Patients', '>100 Patients'],
+                        datasets: [{
+                            label: 'Stability Rate (%)',
+                            data: [45, 55, 65, 75],
+                            backgroundColor: '#1e3a8a',
+                            borderRadius: 4,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        aspectRatio: 2,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    },
+                                    font: { family: 'Source Sans Pro' }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Stability Rate (%)',
+                                    font: { family: 'Source Sans Pro', weight: 'bold' }
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Baseline Patient Volume',
+                                    font: { family: 'Source Sans Pro', weight: 'bold' }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeOutBounce'
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

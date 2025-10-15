@@ -1156,26 +1156,33 @@ const SinglePagePamphlet = () => {
   };
 
   const renderSankeyViz = () => {
-    // Sankey data combining baseline volume with participation outcomes
-    // Format: [Source, Target, Weight]
+    // IMPORTANT: The research paper does not provide actual cross-tabulation data
+    // The distribution below is an illustrative estimate based on research findings that:
+    // - Higher baseline volumes correlate with greater stability
+    // - 51-100 enrollees showed highest stability
+    // - Numbers are proportionally distributed to match exact research totals
+
+    // Calculated baseline volumes from research: 220,556 total × distribution (19%, 21%, 14%, 45%)
+    // Baseline totals: 41,906 (1-10) + 46,317 (11-50) + 30,878 (51-100) + 101,455 (100+) = 220,556
+
     const sankeyData = [
       ['From', 'To', 'Clinicians'],
-      // 1-10 enrollees (smaller volume → higher volatility)
-      ['1-10 Enrollees', 'Stable', 11000],
-      ['1-10 Enrollees', 'Major Increases', 6000],
-      ['1-10 Enrollees', 'Major Decreases', 8000],
-      // 11-50 enrollees (moderate volume)
-      ['11-50 Enrollees', 'Stable', 18000],
-      ['11-50 Enrollees', 'Major Increases', 5500],
-      ['11-50 Enrollees', 'Major Decreases', 6500],
-      // 51-100 enrollees (good volume)
-      ['51-100 Enrollees', 'Stable', 21000],
-      ['51-100 Enrollees', 'Major Increases', 3500],
-      ['51-100 Enrollees', 'Major Decreases', 4500],
-      // 100+ enrollees (high volume → highest stability)
-      ['100+ Enrollees', 'Stable', 87000],
-      ['100+ Enrollees', 'Major Increases', 23761],
-      ['100+ Enrollees', 'Major Decreases', 25756]
+      // 1-10 enrollees: 41,906 total (42% stable, 28.6% increases, 29.4% decreases)
+      ['1-10 Enrollees', 'Stable', 17601],
+      ['1-10 Enrollees', 'Major Increases', 12000],
+      ['1-10 Enrollees', 'Major Decreases', 12305],
+      // 11-50 enrollees: 46,317 total (60% stable, 18.4% increases, 21.6% decreases)
+      ['11-50 Enrollees', 'Stable', 27790],
+      ['11-50 Enrollees', 'Major Increases', 8500],
+      ['11-50 Enrollees', 'Major Decreases', 10027],
+      // 51-100 enrollees: 30,878 total (72% stable, 12% increases, 16% decreases)
+      ['51-100 Enrollees', 'Stable', 22232],
+      ['51-100 Enrollees', 'Major Increases', 3700],
+      ['51-100 Enrollees', 'Major Decreases', 4946],
+      // 100+ enrollees: 101,455 total (68.4% stable, 14.4% increases, 17.2% decreases)
+      ['100+ Enrollees', 'Stable', 69416],
+      ['100+ Enrollees', 'Major Increases', 14561],
+      ['100+ Enrollees', 'Major Decreases', 17478]
     ];
 
     const sankeyOptions = {
@@ -1209,8 +1216,9 @@ const SinglePagePamphlet = () => {
       <DetailedVizPanel>
         <DetailedChartTitle>Participation Flow: Baseline Volume to Outcomes</DetailedChartTitle>
         <DetailedChartSubtitle>
-          Flow visualization showing how clinicians in different baseline volume categories (2016)
-          transitioned to participation outcomes (2016-2019)
+          <strong>Illustrative visualization</strong> showing estimated distribution of how clinicians in different baseline volume categories (2016)
+          may have transitioned to participation outcomes (2016-2019). Cross-tabulation data not available in source research;
+          distribution is proportionally estimated to match exact research totals while reflecting documented correlation between higher baseline volumes and greater stability.
         </DetailedChartSubtitle>
 
         <div style={{ height: '600px', marginTop: '20px' }}>
@@ -1227,59 +1235,66 @@ const SinglePagePamphlet = () => {
           <thead>
             <tr>
               <th>Baseline Volume Category</th>
-              <th>To Stable (%)</th>
-              <th>To Major Increases (%)</th>
-              <th>To Major Decreases (%)</th>
+              <th>To Stable</th>
+              <th>To Major Increases</th>
+              <th>To Major Decreases</th>
               <th>Total Clinicians</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>1-10 Enrollees</strong></td>
-              <td className="number-cell">44%</td>
-              <td className="number-cell">24%</td>
-              <td className="number-cell">32%</td>
-              <td className="number-cell">25,000</td>
+              <td className="number-cell">42.0% (17,601)</td>
+              <td className="number-cell">28.6% (12,000)</td>
+              <td className="number-cell">29.4% (12,305)</td>
+              <td className="number-cell">41,906</td>
             </tr>
             <tr>
               <td><strong>11-50 Enrollees</strong></td>
-              <td className="number-cell">60%</td>
-              <td className="number-cell">18%</td>
-              <td className="number-cell">22%</td>
-              <td className="number-cell">30,000</td>
+              <td className="number-cell">60.0% (27,790)</td>
+              <td className="number-cell">18.4% (8,500)</td>
+              <td className="number-cell">21.6% (10,027)</td>
+              <td className="number-cell">46,317</td>
             </tr>
             <tr>
               <td><strong>51-100 Enrollees</strong></td>
-              <td className="number-cell">72%</td>
-              <td className="number-cell">12%</td>
-              <td className="number-cell">16%</td>
-              <td className="number-cell">29,000</td>
+              <td className="number-cell">72.0% (22,232)</td>
+              <td className="number-cell">12.0% (3,700)</td>
+              <td className="number-cell">16.0% (4,946)</td>
+              <td className="number-cell">30,878</td>
             </tr>
             <tr>
               <td><strong>100+ Enrollees</strong></td>
-              <td className="number-cell">64%</td>
-              <td className="number-cell">17%</td>
-              <td className="number-cell">19%</td>
-              <td className="number-cell">136,517</td>
+              <td className="number-cell">68.4% (69,416)</td>
+              <td className="number-cell">14.4% (14,561)</td>
+              <td className="number-cell">17.2% (17,478)</td>
+              <td className="number-cell">101,455</td>
+            </tr>
+            <tr style={{ backgroundColor: '#f8fafc', fontWeight: 'bold' }}>
+              <td><strong>TOTAL (from research)</strong></td>
+              <td className="number-cell">62.1% (137,039)</td>
+              <td className="number-cell">17.6% (38,761)</td>
+              <td className="number-cell">20.3% (44,756)</td>
+              <td className="number-cell">220,556</td>
             </tr>
           </tbody>
         </DataTable>
 
         <TwoColumnGrid style={{ marginTop: '25px' }}>
           <InsightCard bgColor="#ddd6fe" borderColor="#7c3aed">
-            <h4>Volume-Stability Correlation</h4>
+            <h4>Illustrative Pattern: Volume-Stability Correlation</h4>
             <p>
-              Clinicians with <strong>51-100 baseline enrollees showed the highest stability (72%)</strong>,
-              while those with 1-10 enrollees had the most volatility (44% stable). This suggests that
-              moderate-to-high baseline volumes are predictors of sustained Medicaid participation.
+              This estimated distribution shows <strong>51-100 baseline enrollees with 72% stability</strong>,
+              compared to 42% for those with 1-10 enrollees. Research confirms higher baseline volumes predict greater stability,
+              though exact cross-tabulation percentages were not published in the source study.
             </p>
           </InsightCard>
           <InsightCard bgColor="#e0f2fe" borderColor="#0284c7">
-            <h4>Flow Insights</h4>
+            <h4>Data Accuracy Note</h4>
             <p>
-              The flow visualization reveals that <strong>participation changes are distributed across all volume categories</strong>.
-              Even high-volume providers experience fluctuations, highlighting the dynamic nature of Medicaid
-              participation beyond initial patient loads.
+              <strong>All total numbers match the research exactly</strong> (137,039 stable, 38,761 increases, 44,756 decreases).
+              The baseline category distribution is proportionally estimated to reflect the documented correlation
+              between higher volumes and stability, while ensuring mathematical accuracy.
             </p>
           </InsightCard>
         </TwoColumnGrid>

@@ -1373,57 +1373,8 @@ const SinglePagePamphlet = () => {
 
     return (
       <DetailedVizPanel>
-        <DetailedChartTitle>Predictors of Stable Medicaid Participation</DetailedChartTitle>
-        <DetailedChartSubtitle>
-          Research-identified factors associated with maintaining consistent Medicaid enrollee volumes (2016-2019).
-          All data from published study results.
-        </DetailedChartSubtitle>
-
-        {/* Chart 1: Stability Rates by Specialty */}
-        <DetailedChartBox height="400px">
-          <Bar data={specialtyStabilityChartData} options={detailedChartOptions} />
-        </DetailedChartBox>
-
-        <InsightCard bgColor="#dcfce7" borderColor="#16a34a" style={{ marginTop: '20px' }}>
-          <h4>Specialty Predictor</h4>
-          <p>
-            <strong>Pediatricians (70%) and OBGYNs (68%)</strong> showed highest stability rates, likely due to routine well-child visits and prenatal care.
-            <strong>Nurse Practitioners and Physician Associates (52% each)</strong> had lowest stability, potentially influenced by "incident to" billing practices and evolving practice patterns.
-          </p>
-        </InsightCard>
-
-        {/* Chart 2: Baseline Volume Distribution */}
-        <DetailedChartBox height="450px" style={{ marginTop: '30px' }}>
-          <Bar data={baselineVolumeBySpecialty} options={stackedBarOptions} />
-        </DetailedChartBox>
-
-        <InsightCard bgColor="#ddd6fe" borderColor="#7c3aed" style={{ marginTop: '20px' }}>
-          <h4>Baseline Volume Predictor</h4>
-          <p>
-            Research found that <strong>clinicians serving &gt;100 Medicaid patients at baseline were significantly more likely to maintain stable participation</strong>.
-            Pediatricians had the highest proportion (72%) with 100+ baseline enrollees, correlating with their high stability rate (70%).
-          </p>
-        </InsightCard>
-
-        <TwoColumnGrid style={{ marginTop: '25px' }}>
-          <InsightCard bgColor="#e0f2fe" borderColor="#0284c7">
-            <h4>Policy Implications</h4>
-            <p>
-              Supporting Community Health Centers and addressing rural provider challenges may help stabilize Medicaid networks.
-              Baseline volume emerges as a strong predictor, suggesting focus on maintaining existing patient panels.
-            </p>
-          </InsightCard>
-          <InsightCard bgColor="#fef3c7" borderColor="#f59e0b">
-            <h4>Data Source</h4>
-            <p>
-              All statistics from published research analyzing 220,556 primary care clinicians across 40 states (2016-2019).
-              Multivariate regression identified independent predictors of stable participation.
-            </p>
-          </InsightCard>
-        </TwoColumnGrid>
-
         {/* Sankey Flow Diagram: 2016 Baseline → 2019 Outcomes */}
-        <div style={{ marginTop: '50px', borderTop: '3px solid #e2e8f0', paddingTop: '30px' }}>
+        <div>
           <DetailedChartTitle>Baseline Volume (2016) → Participation Outcomes (2016-2019)</DetailedChartTitle>
           <DetailedChartSubtitle>
             <strong style={{ color: '#dc2626' }}>⚠️ ESTIMATED DISTRIBUTION:</strong> The research paper provides overall outcomes (62.1% stable, 17.6% increases, 20.3% decreases) and baseline volume distribution (19%, 21%, 14%, 45%), but does NOT provide the actual cross-tabulation showing how specific baseline categories flowed to specific outcomes. The distribution below is proportionally estimated to match exact research totals while reflecting the documented correlation between higher baseline volumes and greater stability.

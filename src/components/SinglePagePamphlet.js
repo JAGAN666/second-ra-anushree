@@ -145,13 +145,12 @@ const MainGrid = styled.div`
 
 const StatsRow = styled.div`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
   margin-bottom: 25px;
-
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
@@ -423,14 +422,10 @@ const VizSelectorContainer = styled.div`
 
 const VizTabsRow = styled.div`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: 768px) {
+  @media (max-width: 968px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 6px;
   }

@@ -380,6 +380,29 @@ const FooterText = styled.p`
   color: #64748b;
 `;
 
+const PaperLink = styled.a`
+  color: #2c5aa0;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 2px solid #2c5aa0;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: inline-block;
+
+  &:hover {
+    background: #2c5aa0;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+`;
+
 // Visualization Selector Components
 const VizSelectorContainer = styled.div`
   background: #f8fafc;
@@ -770,24 +793,27 @@ const SinglePagePamphlet = () => {
   };
 
   // Enhanced chart options for detailed views with better readability
+  const isMobile = window.innerWidth <= 768;
+
   const detailedChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
-        position: 'top',
+        position: isMobile ? 'bottom' : 'top',
         labels: {
-          font: { size: 13, weight: 'bold' },
-          padding: 15
+          font: { size: isMobile ? 10 : 13, weight: 'bold' },
+          padding: isMobile ? 8 : 15,
+          boxWidth: isMobile ? 12 : 40
         }
       },
       tooltip: {
         enabled: true,
         backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        padding: 16,
-        titleFont: { size: 14, weight: 'bold' },
-        bodyFont: { size: 13 },
+        padding: isMobile ? 10 : 16,
+        titleFont: { size: isMobile ? 11 : 14, weight: 'bold' },
+        bodyFont: { size: isMobile ? 10 : 13 },
         callbacks: {
           title: function(context) {
             return context[0].label;
@@ -857,10 +883,10 @@ const SinglePagePamphlet = () => {
         }
       },
       datalabels: {
-        display: true,
+        display: !isMobile,
         color: '#ffffff',
         font: {
-          size: 14,
+          size: isMobile ? 10 : 14,
           weight: 'bold'
         },
         formatter: function(value) {
@@ -876,7 +902,9 @@ const SinglePagePamphlet = () => {
           display: false
         },
         ticks: {
-          font: { size: 11, weight: 'bold' }
+          font: { size: isMobile ? 8 : 11, weight: 'bold' },
+          maxRotation: isMobile ? 45 : 0,
+          minRotation: isMobile ? 45 : 0
         }
       },
       y: {
@@ -884,7 +912,7 @@ const SinglePagePamphlet = () => {
           color: '#e2e8f0'
         },
         ticks: {
-          font: { size: 11, weight: 'bold' },
+          font: { size: isMobile ? 8 : 11, weight: 'bold' },
           callback: function(value) {
             return value + '%';
           }
@@ -1617,6 +1645,13 @@ const SinglePagePamphlet = () => {
           <FooterText>
             <strong>Research Study 2016-2019</strong> | Bodas, Luo & Vichare | George Washington University
           </FooterText>
+          <PaperLink
+            href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11641827/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            📄 View Research Paper
+          </PaperLink>
         </Footer>
       </PageContainer>
     </>

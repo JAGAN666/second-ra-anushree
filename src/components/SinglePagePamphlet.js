@@ -658,12 +658,14 @@ const SinglePagePamphlet = () => {
   const [selectedViz, setSelectedViz] = useState(null);
 
   // Actual data from research paper
+  // COLORBLIND-FRIENDLY PALETTE (Okabe-Ito):
+  // Blue (#0072B2) = Stable | Orange (#E69F00) = Increases | Vermillion (#D55E00) = Decreases
   const participationData = {
     labels: ['Stable Volume', 'Major Increases', 'Major Decreases'],
     datasets: [{
       label: 'Clinician Participation (%)',
       data: [60, 20, 20],
-      backgroundColor: ['#2c5aa0', '#28a745', '#dc3545'],
+      backgroundColor: ['#0072B2', '#E69F00', '#D55E00'],
       borderWidth: 0,
     }]
   };
@@ -694,8 +696,8 @@ const SinglePagePamphlet = () => {
     datasets: [{
       label: 'Stable Volume (%)',
       data: [52, 67, 64, 68, 70, 52],
-      backgroundColor: 'rgba(44, 90, 160, 0.8)',
-      borderColor: '#2c5aa0',
+      backgroundColor: 'rgba(0, 114, 178, 0.8)',
+      borderColor: '#0072B2',
       borderWidth: 1,
       borderRadius: 4,
     }]
@@ -707,15 +709,15 @@ const SinglePagePamphlet = () => {
       {
         label: 'Major Increases (%)',
         data: [22, 14, 17, 16, 14, 24],
-        backgroundColor: 'rgba(40, 167, 69, 0.7)',
-        borderColor: '#28a745',
+        backgroundColor: 'rgba(230, 159, 0, 0.8)',
+        borderColor: '#E69F00',
         borderWidth: 1,
       },
       {
         label: 'Major Decreases (%)',
         data: [26, 20, 19, 16, 16, 24],
-        backgroundColor: 'rgba(220, 53, 69, 0.7)',
-        borderColor: '#dc3545',
+        backgroundColor: 'rgba(213, 94, 0, 0.8)',
+        borderColor: '#D55E00',
         borderWidth: 1,
       }
     ]
@@ -726,12 +728,12 @@ const SinglePagePamphlet = () => {
     datasets: [{
       label: 'Baseline Enrollees Served',
       data: [19, 21, 14, 45],
-      borderColor: '#2c5aa0',
-      backgroundColor: 'rgba(44, 90, 160, 0.1)',
+      borderColor: '#0072B2',
+      backgroundColor: 'rgba(0, 114, 178, 0.1)',
       tension: 0.3,
       fill: true,
       pointRadius: 5,
-      pointBackgroundColor: '#2c5aa0',
+      pointBackgroundColor: '#0072B2',
     }]
   };
 
@@ -1039,7 +1041,7 @@ const SinglePagePamphlet = () => {
         <Doughnut data={participationData} options={detailedDoughnutOptions} />
       </DetailedChartBox>
 
-      <InsightCard bgColor="#e0f2fe" borderColor="#0284c7">
+      <InsightCard bgColor="#E3F2FD" borderColor="#0072B2">
         <h4>Key Insight</h4>
         <p>
           While 62.1% of clinicians maintained stable Medicaid participation, 37.9% experienced major fluctuations (17.6% increases, 20.3% decreases).
@@ -1057,22 +1059,22 @@ const SinglePagePamphlet = () => {
         {
           label: 'Stable Volume (%)',
           data: specialtyLabels.map(s => detailedSpecialtyData[s].stablePct),
-          backgroundColor: 'rgba(44, 90, 160, 0.8)',
-          borderColor: '#2c5aa0',
+          backgroundColor: 'rgba(0, 114, 178, 0.8)',
+          borderColor: '#0072B2',
           borderWidth: 2
         },
         {
           label: 'Major Increases (%)',
           data: specialtyLabels.map(s => detailedSpecialtyData[s].increasesPct),
-          backgroundColor: 'rgba(40, 167, 69, 0.8)',
-          borderColor: '#28a745',
+          backgroundColor: 'rgba(230, 159, 0, 0.8)',
+          borderColor: '#E69F00',
           borderWidth: 2
         },
         {
           label: 'Major Decreases (%)',
           data: specialtyLabels.map(s => detailedSpecialtyData[s].decreasesPct),
-          backgroundColor: 'rgba(220, 53, 69, 0.8)',
-          borderColor: '#dc3545',
+          backgroundColor: 'rgba(213, 94, 0, 0.8)',
+          borderColor: '#D55E00',
           borderWidth: 2
         }
       ]
@@ -1090,14 +1092,14 @@ const SinglePagePamphlet = () => {
         </DetailedChartBox>
 
         <TwoColumnGrid>
-          <InsightCard bgColor="#dcfce7" borderColor="#16a34a">
+          <InsightCard bgColor="#E3F2FD" borderColor="#0072B2">
             <h4>Most Stable Specialties</h4>
             <p>
               <strong>Pediatricians (70%)</strong> and <strong>OBGYNs (68%)</strong> demonstrated the highest stability rates.
               This may be attributed to the routine nature of well-child visits and prenatal care, which are often unavoidable services.
             </p>
           </InsightCard>
-          <InsightCard bgColor="#fee2e2" borderColor="#dc2626">
+          <InsightCard bgColor="#FBE9E7" borderColor="#D55E00">
             <h4>Highest Volatility</h4>
             <p>
               <strong>Nurse Practitioners (26% decreases)</strong> and <strong>Physician Associates (24% increases/decreases)</strong> showed
@@ -1120,7 +1122,7 @@ const SinglePagePamphlet = () => {
         <Bar data={majorChangesData} options={detailedChartOptions} />
       </DetailedChartBox>
 
-      <InsightCard bgColor="#fef3c7" borderColor="#f59e0b">
+      <InsightCard bgColor="#FFF3E0" borderColor="#E69F00">
         <h4>Pattern Analysis</h4>
         <p>
           The bidirectional nature of changes suggests that Medicaid participation is influenced by multiple dynamic factors including
@@ -1140,8 +1142,9 @@ const SinglePagePamphlet = () => {
       datasets: volumeCategories.map((cat, idx) => ({
         label: cat + ' enrollees',
         data: specialtyNames.map(s => baselineBySpecialty[s][cat]),
-        backgroundColor: ['rgba(220, 38, 38, 0.7)', 'rgba(249, 115, 22, 0.7)', 'rgba(234, 179, 8, 0.7)', 'rgba(34, 197, 94, 0.7)'][idx],
-        borderColor: ['#dc2626', '#f97316', '#eab308', '#22c55e'][idx],
+        // Colorblind-friendly gradient from vermillion to blue
+        backgroundColor: ['rgba(213, 94, 0, 0.8)', 'rgba(230, 159, 0, 0.8)', 'rgba(86, 180, 233, 0.8)', 'rgba(0, 114, 178, 0.8)'][idx],
+        borderColor: ['#D55E00', '#E69F00', '#56B4E9', '#0072B2'][idx],
         borderWidth: 1
       }))
     };
@@ -1214,7 +1217,7 @@ const SinglePagePamphlet = () => {
           <Bar data={baselineStackedData} options={stackedOptions} />
         </DetailedChartBox>
 
-        <InsightCard bgColor="#ddd6fe" borderColor="#7c3aed">
+        <InsightCard bgColor="#F3E5F5" borderColor="#9C27B0">
           <h4>Predictor of Stability</h4>
           <p>
             Clinicians serving <strong>more than 100 Medicaid patients at baseline</strong> were significantly more likely to maintain stable participation.
@@ -1485,7 +1488,8 @@ const SinglePagePamphlet = () => {
                 height: 600,
                 sankey: {
                   node: {
-                    colors: ['#dc2626', '#f97316', '#eab308', '#22c55e', '#2c5aa0', '#06b6d4', '#ef4444'],
+                    // Colorblind-friendly palette: baseline volumes + outcomes
+                    colors: ['#D55E00', '#E69F00', '#56B4E9', '#0072B2', '#0072B2', '#E69F00', '#D55E00'],
                     label: {
                       fontName: 'Inter',
                       fontSize: 13,
@@ -1497,7 +1501,7 @@ const SinglePagePamphlet = () => {
                   },
                   link: {
                     colorMode: 'gradient',
-                    colors: ['#2c5aa0', '#06b6d4', '#ef4444']
+                    colors: ['#0072B2', '#E69F00', '#D55E00']
                   }
                 },
                 tooltip: {

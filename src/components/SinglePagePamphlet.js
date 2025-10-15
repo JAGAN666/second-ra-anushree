@@ -1039,37 +1039,6 @@ const SinglePagePamphlet = () => {
         <Doughnut data={participationData} options={detailedDoughnutOptions} />
       </DetailedChartBox>
 
-      <DataTable>
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Clinicians (N)</th>
-            <th>Percentage</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Stable Volume</strong></td>
-            <td className="number-cell">137,039</td>
-            <td className="number-cell">62.1%</td>
-            <td>Maintained consistent Medicaid enrollee volumes (±90% of baseline)</td>
-          </tr>
-          <tr className="highlight">
-            <td><strong>Major Increases</strong></td>
-            <td className="number-cell">38,761</td>
-            <td className="number-cell">17.6%</td>
-            <td>Experienced &gt;90% increase from baseline enrollee volume</td>
-          </tr>
-          <tr className="highlight">
-            <td><strong>Major Decreases</strong></td>
-            <td className="number-cell">44,756</td>
-            <td className="number-cell">20.3%</td>
-            <td>Experienced &gt;90% decrease from baseline enrollee volume</td>
-          </tr>
-        </tbody>
-      </DataTable>
-
       <InsightCard bgColor="#e0f2fe" borderColor="#0284c7">
         <h4>Key Insight</h4>
         <p>
@@ -1119,29 +1088,6 @@ const SinglePagePamphlet = () => {
         <DetailedChartBox height="600px">
           <Bar data={allPatternsData} options={detailedChartOptions} />
         </DetailedChartBox>
-
-        <DataTable>
-          <thead>
-            <tr>
-              <th>Specialty</th>
-              <th>Total Clinicians</th>
-              <th>Stable Volume</th>
-              <th>Major Increases</th>
-              <th>Major Decreases</th>
-            </tr>
-          </thead>
-          <tbody>
-            {specialtyLabels.map(specialty => (
-              <tr key={specialty}>
-                <td><strong>{specialty}</strong></td>
-                <td className="number-cell">{detailedSpecialtyData[specialty].total.toLocaleString()}</td>
-                <td className="number-cell">{detailedSpecialtyData[specialty].stablePct}% ({detailedSpecialtyData[specialty].stable.toLocaleString()})</td>
-                <td className="number-cell">{detailedSpecialtyData[specialty].increasesPct}% ({detailedSpecialtyData[specialty].increases.toLocaleString()})</td>
-                <td className="number-cell">{detailedSpecialtyData[specialty].decreasesPct}% ({detailedSpecialtyData[specialty].decreases.toLocaleString()})</td>
-              </tr>
-            ))}
-          </tbody>
-        </DataTable>
 
         <TwoColumnGrid>
           <InsightCard bgColor="#dcfce7" borderColor="#16a34a">
@@ -1267,29 +1213,6 @@ const SinglePagePamphlet = () => {
         <DetailedChartBox height="550px">
           <Bar data={baselineStackedData} options={stackedOptions} />
         </DetailedChartBox>
-
-        <DataTable>
-          <thead>
-            <tr>
-              <th>Specialty</th>
-              <th>1-10 Enrollees</th>
-              <th>11-50 Enrollees</th>
-              <th>51-100 Enrollees</th>
-              <th>100+ Enrollees</th>
-            </tr>
-          </thead>
-          <tbody>
-            {specialtyNames.map(specialty => (
-              <tr key={specialty}>
-                <td><strong>{specialty}</strong></td>
-                <td className="number-cell">{baselineBySpecialty[specialty]['1-10']}%</td>
-                <td className="number-cell">{baselineBySpecialty[specialty]['11-50']}%</td>
-                <td className="number-cell">{baselineBySpecialty[specialty]['51-100']}%</td>
-                <td className="number-cell">{baselineBySpecialty[specialty]['100+']}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </DataTable>
 
         <InsightCard bgColor="#ddd6fe" borderColor="#7c3aed">
           <h4>Predictor of Stability</h4>
@@ -1481,44 +1404,6 @@ const SinglePagePamphlet = () => {
             Pediatricians had the highest proportion (72%) with 100+ baseline enrollees, correlating with their high stability rate (70%).
           </p>
         </InsightCard>
-
-        {/* Data Table: Key Predictors from Research */}
-        <DataTable style={{ marginTop: '30px' }}>
-          <thead>
-            <tr>
-              <th>Predictor</th>
-              <th>Finding</th>
-              <th>Impact on Stability</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>High Baseline Volume</strong></td>
-              <td>&gt;100 Medicaid enrollees in 2016</td>
-              <td className="number-cell" style={{ color: '#22c55e' }}>↑ Higher Stability</td>
-            </tr>
-            <tr>
-              <td><strong>Community Health Center</strong></td>
-              <td>CHC affiliation</td>
-              <td className="number-cell" style={{ color: '#22c55e' }}>↑ Higher Stability</td>
-            </tr>
-            <tr>
-              <td><strong>Specialty</strong></td>
-              <td>Pediatrics, OB/GYN</td>
-              <td className="number-cell" style={{ color: '#22c55e' }}>↑ Higher Stability</td>
-            </tr>
-            <tr>
-              <td><strong>Rural Practice</strong></td>
-              <td>Rural location</td>
-              <td className="number-cell" style={{ color: '#ef4444' }}>↓ Lower Stability</td>
-            </tr>
-            <tr>
-              <td><strong>Low Baseline Volume</strong></td>
-              <td>1-10 Medicaid enrollees in 2016</td>
-              <td className="number-cell" style={{ color: '#ef4444' }}>↓ Lower Stability</td>
-            </tr>
-          </tbody>
-        </DataTable>
 
         <TwoColumnGrid style={{ marginTop: '25px' }}>
           <InsightCard bgColor="#e0f2fe" borderColor="#0284c7">

@@ -380,38 +380,6 @@ const FooterText = styled.p`
   color: #64748b;
 `;
 
-const PrintBtn = styled.button`
-  background: #2c5aa0;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  min-height: 44px;
-
-  &:hover {
-    background: #1e3a5f;
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  @media (max-width: 768px) {
-    padding: 12px 16px;
-    font-size: 0.85rem;
-    width: 100%;
-  }
-
-  @media print {
-    display: none;
-  }
-`;
-
 // Visualization Selector Components
 const VizSelectorContainer = styled.div`
   background: #f8fafc;
@@ -1649,9 +1617,6 @@ const SinglePagePamphlet = () => {
           <FooterText>
             <strong>Research Study 2016-2019</strong> | Bodas, Luo & Vichare | George Washington University
           </FooterText>
-          <PrintBtn onClick={() => window.print()}>
-            🖨 Print Report
-          </PrintBtn>
         </Footer>
       </PageContainer>
     </>

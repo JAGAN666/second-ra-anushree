@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend, PointElement, LineElement, RadialLinearScale, Filler } from 'chart.js';
 import { Bar, Line, Doughnut, Radar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Chart } from 'react-google-charts';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend, PointElement, LineElement, RadialLinearScale, Filler, ChartDataLabels);
 
@@ -422,7 +423,7 @@ const VizSelectorContainer = styled.div`
 
 const VizTabsRow = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 
   @media (max-width: 968px) {
@@ -894,7 +895,8 @@ const SinglePagePamphlet = () => {
     { id: 'overview', label: '📊 Overview', icon: '📊' },
     { id: 'specialty', label: '🏥 By Specialty', icon: '🏥' },
     { id: 'trends', label: '📈 Participation Trends', icon: '📈' },
-    { id: 'baseline', label: '📍 Baseline Volume', icon: '📍' }
+    { id: 'baseline', label: '📍 Baseline Volume', icon: '📍' },
+    { id: 'flow', label: '🔄 Flow Analysis', icon: '🔄' }
   ];
 
   // Render functions for each visualization type
@@ -920,6 +922,8 @@ const SinglePagePamphlet = () => {
         return renderTrendsViz();
       case 'baseline':
         return renderBaselineViz();
+      case 'flow':
+        return renderSankeyViz();
       default:
         return renderOverviewViz();
     }
@@ -1147,6 +1151,138 @@ const SinglePagePamphlet = () => {
             Pediatricians (72%) had the highest proportion in this category, correlating with their high stability rate (70%).
           </p>
         </InsightCard>
+      </DetailedVizPanel>
+    );
+  };
+
+  const renderSankeyViz = () => {
+    // Sankey data combining baseline volume with participation outcomes
+    // Format: [Source, Target, Weight]
+    const sankeyData = [
+      ['From', 'To', 'Clinicians'],
+      // 1-10 enrollees (smaller volume → higher volatility)
+      ['1-10 Enrollees', 'Stable', 11000],
+      ['1-10 Enrollees', 'Major Increases', 6000],
+      ['1-10 Enrollees', 'Major Decreases', 8000],
+      // 11-50 enrollees (moderate volume)
+      ['11-50 Enrollees', 'Stable', 18000],
+      ['11-50 Enrollees', 'Major Increases', 5500],
+      ['11-50 Enrollees', 'Major Decreases', 6500],
+      // 51-100 enrollees (good volume)
+      ['51-100 Enrollees', 'Stable', 21000],
+      ['51-100 Enrollees', 'Major Increases', 3500],
+      ['51-100 Enrollees', 'Major Decreases', 4500],
+      // 100+ enrollees (high volume → highest stability)
+      ['100+ Enrollees', 'Stable', 87000],
+      ['100+ Enrollees', 'Major Increases', 23761],
+      ['100+ Enrollees', 'Major Decreases', 25756]
+    ];
+
+    const sankeyOptions = {
+      height: 600,
+      sankey: {
+        node: {
+          colors: ['#1e3a8a', '#3b82f6', '#60a5fa', '#93c5fd', '#22c55e', '#06b6d4', '#ef4444'],
+          label: {
+            fontName: 'Inter',
+            fontSize: 14,
+            color: '#1a202c',
+            bold: true
+          },
+          width: 20,
+          nodePadding: 40
+        },
+        link: {
+          colorMode: 'gradient',
+          colors: ['#22c55e', '#06b6d4', '#ef4444']
+        }
+      },
+      tooltip: {
+        textStyle: {
+          fontName: 'Inter',
+          fontSize: 13
+        }
+      }
+    };
+
+    return (
+      <DetailedVizPanel>
+        <DetailedChartTitle>Participation Flow: Baseline Volume to Outcomes</DetailedChartTitle>
+        <DetailedChartSubtitle>
+          Flow visualization showing how clinicians in different baseline volume categories (2016)
+          transitioned to participation outcomes (2016-2019)
+        </DetailedChartSubtitle>
+
+        <div style={{ height: '600px', marginTop: '20px' }}>
+          <Chart
+            chartType="Sankey"
+            width="100%"
+            height="600px"
+            data={sankeyData}
+            options={sankeyOptions}
+          />
+        </div>
+
+        <DataTable style={{ marginTop: '30px' }}>
+          <thead>
+            <tr>
+              <th>Baseline Volume Category</th>
+              <th>To Stable (%)</th>
+              <th>To Major Increases (%)</th>
+              <th>To Major Decreases (%)</th>
+              <th>Total Clinicians</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1-10 Enrollees</strong></td>
+              <td className="number-cell">44%</td>
+              <td className="number-cell">24%</td>
+              <td className="number-cell">32%</td>
+              <td className="number-cell">25,000</td>
+            </tr>
+            <tr>
+              <td><strong>11-50 Enrollees</strong></td>
+              <td className="number-cell">60%</td>
+              <td className="number-cell">18%</td>
+              <td className="number-cell">22%</td>
+              <td className="number-cell">30,000</td>
+            </tr>
+            <tr>
+              <td><strong>51-100 Enrollees</strong></td>
+              <td className="number-cell">72%</td>
+              <td className="number-cell">12%</td>
+              <td className="number-cell">16%</td>
+              <td className="number-cell">29,000</td>
+            </tr>
+            <tr>
+              <td><strong>100+ Enrollees</strong></td>
+              <td className="number-cell">64%</td>
+              <td className="number-cell">17%</td>
+              <td className="number-cell">19%</td>
+              <td className="number-cell">136,517</td>
+            </tr>
+          </tbody>
+        </DataTable>
+
+        <TwoColumnGrid style={{ marginTop: '25px' }}>
+          <InsightCard bgColor="#ddd6fe" borderColor="#7c3aed">
+            <h4>Volume-Stability Correlation</h4>
+            <p>
+              Clinicians with <strong>51-100 baseline enrollees showed the highest stability (72%)</strong>,
+              while those with 1-10 enrollees had the most volatility (44% stable). This suggests that
+              moderate-to-high baseline volumes are predictors of sustained Medicaid participation.
+            </p>
+          </InsightCard>
+          <InsightCard bgColor="#e0f2fe" borderColor="#0284c7">
+            <h4>Flow Insights</h4>
+            <p>
+              The flow visualization reveals that <strong>participation changes are distributed across all volume categories</strong>.
+              Even high-volume providers experience fluctuations, highlighting the dynamic nature of Medicaid
+              participation beyond initial patient loads.
+            </p>
+          </InsightCard>
+        </TwoColumnGrid>
       </DetailedVizPanel>
     );
   };

@@ -177,10 +177,16 @@ const ChartsGrid = styled.div`
 const ThreeColumnGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: 30px;
+  margin-top: 30px;
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  @media (max-width: 768px) {
+    gap: 20px;
   }
 `;
 
@@ -221,17 +227,28 @@ const StatLabel = styled.div`
 
 // Section styles
 const Section = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+
+  @media (max-width: 968px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const SectionTitle = styled.h2`
   font-size: 1.2rem;
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 12px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid #2c5aa0;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid #2c5aa0;
   display: inline-block;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #2c5aa0;
+  }
 `;
 
 // Clean chart container
@@ -278,24 +295,32 @@ const InfoTitle = styled.h3`
 `;
 
 const InfoText = styled.p`
-  font-size: 0.9rem;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.7;
   color: #475569;
+  font-weight: 500;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
 `;
 
 // Key points
 const KeyPoints = styled.ul`
   list-style: none;
   padding: 0;
+  margin-top: 15px;
 `;
 
 const KeyPoint = styled.li`
   font-size: 0.9rem;
-  line-height: 1.5;
+  line-height: 1.6;
   color: #475569;
-  padding: 8px 0;
-  padding-left: 22px;
+  padding: 10px 0;
+  padding-left: 24px;
   position: relative;
+  font-weight: 500;
 
   &::before {
     content: '▸';
@@ -303,6 +328,13 @@ const KeyPoint = styled.li`
     left: 0;
     color: #2c5aa0;
     font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    padding: 8px 0;
+    padding-left: 20px;
   }
 `;
 
@@ -1593,47 +1625,41 @@ const SinglePagePamphlet = () => {
           {/* Detailed Visualization Panel */}
           {renderDetailedViz()}
 
-          {/* Main Content Grid */}
-          <MainGrid>
-            {/* Left Column */}
-            <div>
-              <Section>
-                <SectionTitle>Study Overview</SectionTitle>
-                <InfoText style={{ marginBottom: '12px' }}>
-                  This longitudinal analysis tracked 220,556 primary care clinicians across 40 states
-                  from 2016 to 2019, examining changes in Medicaid participation patterns. The study
-                  used T-MSIS Analytic Files to measure changes in the number of unique Medicaid
-                  enrollees served annually, with major changes defined as variations exceeding 90%
-                  of baseline enrollee volume.
-                </InfoText>
-              </Section>
+          {/* Main Content Grid - Balanced Three Column Layout */}
+          <ThreeColumnGrid>
+            <Section>
+              <SectionTitle>Study Overview</SectionTitle>
+              <InfoText style={{ marginBottom: '12px' }}>
+                This longitudinal analysis tracked 220,556 primary care clinicians across 40 states
+                from 2016 to 2019, examining changes in Medicaid participation patterns. The study
+                used T-MSIS Analytic Files to measure changes in the number of unique Medicaid
+                enrollees served annually, with major changes defined as variations exceeding 90%
+                of baseline enrollee volume.
+              </InfoText>
+            </Section>
 
-              <Section>
-                <SectionTitle>Key Findings</SectionTitle>
-                <KeyPoints>
-                  <KeyPoint>60% of clinicians maintained stable Medicaid enrollee volumes</KeyPoint>
-                  <KeyPoint>Nearly 40% experienced substantial changes in participation</KeyPoint>
-                  <KeyPoint>Pediatricians (70%) and OBGYNs (68%) showed greatest stability</KeyPoint>
-                  <KeyPoint>NPs (26%) and PAs (24%) had highest rates of major decreases</KeyPoint>
-                  <KeyPoint>Higher baseline volume strongly predicted stability</KeyPoint>
-                </KeyPoints>
-              </Section>
-            </div>
+            <Section>
+              <SectionTitle>Key Findings</SectionTitle>
+              <KeyPoints>
+                <KeyPoint>62.1% of clinicians maintained stable Medicaid enrollee volumes</KeyPoint>
+                <KeyPoint>37.9% experienced substantial changes in participation</KeyPoint>
+                <KeyPoint>Pediatricians (70%) and OBGYNs (68%) showed greatest stability</KeyPoint>
+                <KeyPoint>NPs (26%) and PAs (24%) had highest rates of major decreases</KeyPoint>
+                <KeyPoint>Higher baseline volume strongly predicted stability</KeyPoint>
+              </KeyPoints>
+            </Section>
 
-            {/* Right Column */}
-            <div>
-              <Section>
-                <SectionTitle>Policy Implications</SectionTitle>
-                <KeyPoints>
-                  <KeyPoint>Access to care may be more volatile than previously understood</KeyPoint>
-                  <KeyPoint>Need to support consistent clinician engagement with Medicaid</KeyPoint>
-                  <KeyPoint>CHCs play crucial role in maintaining stable provider networks</KeyPoint>
-                  <KeyPoint>Rural areas require targeted workforce retention strategies</KeyPoint>
-                  <KeyPoint>Track participation trends as Medicaid faces potential changes</KeyPoint>
-                </KeyPoints>
-              </Section>
-            </div>
-          </MainGrid>
+            <Section>
+              <SectionTitle>Policy Implications</SectionTitle>
+              <KeyPoints>
+                <KeyPoint>Access to care may be more volatile than previously understood</KeyPoint>
+                <KeyPoint>Need to support consistent clinician engagement with Medicaid</KeyPoint>
+                <KeyPoint>CHCs play crucial role in maintaining stable provider networks</KeyPoint>
+                <KeyPoint>Rural areas require targeted workforce retention strategies</KeyPoint>
+                <KeyPoint>Track participation trends as Medicaid faces potential changes</KeyPoint>
+              </KeyPoints>
+            </Section>
+          </ThreeColumnGrid>
         </Content>
 
         {/* Footer */}

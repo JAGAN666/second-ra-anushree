@@ -1352,23 +1352,88 @@ const SinglePagePamphlet = () => {
               width="100%"
               height="600px"
               data={[
-                ['From (2016)', 'To (2019)', 'Clinicians'],
+                [
+                  'From (2016)',
+                  'To (2019)',
+                  'Clinicians',
+                  { type: 'string', role: 'tooltip', p: { html: true } }
+                ],
                 // 1-10 enrollees: 41,906 total (42% stable, 28.6% increases, 29.4% decreases)
-                ['1-10 Enrollees (2016)', 'Stable (2019)', 17601],
-                ['1-10 Enrollees (2016)', 'Major Increases (2019)', 12000],
-                ['1-10 Enrollees (2016)', 'Major Decreases (2019)', 12305],
+                [
+                  '1-10 Enrollees (2016)',
+                  'Stable (2019)',
+                  17601,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">1-10 Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>17,601 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 42.0% of 1-10 Enrollees category (41,906 total)<br/>• 8.0% of all clinicians (220,556 total)<br/>• 12.8% of all Stable outcomes (137,039 total)</div></div>'
+                ],
+                [
+                  '1-10 Enrollees (2016)',
+                  'Major Increases (2019)',
+                  12000,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">1-10 Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>12,000 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 28.6% of 1-10 Enrollees category (41,906 total)<br/>• 5.4% of all clinicians (220,556 total)<br/>• 31.0% of all Major Increases (38,761 total)</div></div>'
+                ],
+                [
+                  '1-10 Enrollees (2016)',
+                  'Major Decreases (2019)',
+                  12305,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">1-10 Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>12,305 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 29.4% of 1-10 Enrollees category (41,906 total)<br/>• 5.6% of all clinicians (220,556 total)<br/>• 27.5% of all Major Decreases (44,756 total)</div></div>'
+                ],
                 // 11-50 enrollees: 46,317 total (60% stable, 18.4% increases, 21.6% decreases)
-                ['11-50 Enrollees (2016)', 'Stable (2019)', 27790],
-                ['11-50 Enrollees (2016)', 'Major Increases (2019)', 8500],
-                ['11-50 Enrollees (2016)', 'Major Decreases (2019)', 10027],
+                [
+                  '11-50 Enrollees (2016)',
+                  'Stable (2019)',
+                  27790,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">11-50 Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>27,790 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 60.0% of 11-50 Enrollees category (46,317 total)<br/>• 12.6% of all clinicians (220,556 total)<br/>• 20.3% of all Stable outcomes (137,039 total)</div></div>'
+                ],
+                [
+                  '11-50 Enrollees (2016)',
+                  'Major Increases (2019)',
+                  8500,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">11-50 Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>8,500 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 18.4% of 11-50 Enrollees category (46,317 total)<br/>• 3.9% of all clinicians (220,556 total)<br/>• 21.9% of all Major Increases (38,761 total)</div></div>'
+                ],
+                [
+                  '11-50 Enrollees (2016)',
+                  'Major Decreases (2019)',
+                  10027,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">11-50 Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>10,027 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 21.6% of 11-50 Enrollees category (46,317 total)<br/>• 4.5% of all clinicians (220,556 total)<br/>• 22.4% of all Major Decreases (44,756 total)</div></div>'
+                ],
                 // 51-100 enrollees: 30,878 total (72% stable, 12% increases, 16% decreases)
-                ['51-100 Enrollees (2016)', 'Stable (2019)', 22232],
-                ['51-100 Enrollees (2016)', 'Major Increases (2019)', 3700],
-                ['51-100 Enrollees (2016)', 'Major Decreases (2019)', 4946],
+                [
+                  '51-100 Enrollees (2016)',
+                  'Stable (2019)',
+                  22232,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">51-100 Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>22,232 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 72.0% of 51-100 Enrollees category (30,878 total)<br/>• 10.1% of all clinicians (220,556 total)<br/>• 16.2% of all Stable outcomes (137,039 total)</div></div>'
+                ],
+                [
+                  '51-100 Enrollees (2016)',
+                  'Major Increases (2019)',
+                  3700,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">51-100 Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>3,700 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 12.0% of 51-100 Enrollees category (30,878 total)<br/>• 1.7% of all clinicians (220,556 total)<br/>• 9.5% of all Major Increases (38,761 total)</div></div>'
+                ],
+                [
+                  '51-100 Enrollees (2016)',
+                  'Major Decreases (2019)',
+                  4946,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">51-100 Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>4,946 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 16.0% of 51-100 Enrollees category (30,878 total)<br/>• 2.2% of all clinicians (220,556 total)<br/>• 11.1% of all Major Decreases (44,756 total)</div></div>'
+                ],
                 // 100+ enrollees: 101,455 total (68.4% stable, 14.4% increases, 17.2% decreases)
-                ['100+ Enrollees (2016)', 'Stable (2019)', 69416],
-                ['100+ Enrollees (2016)', 'Major Increases (2019)', 14561],
-                ['100+ Enrollees (2016)', 'Major Decreases (2019)', 17478]
+                [
+                  '100+ Enrollees (2016)',
+                  'Stable (2019)',
+                  69416,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">100+ Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>69,416 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 68.4% of 100+ Enrollees category (101,455 total)<br/>• 31.5% of all clinicians (220,556 total)<br/>• 50.7% of all Stable outcomes (137,039 total)</div></div>'
+                ],
+                [
+                  '100+ Enrollees (2016)',
+                  'Major Increases (2019)',
+                  14561,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">100+ Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>14,561 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 14.4% of 100+ Enrollees category (101,455 total)<br/>• 6.6% of all clinicians (220,556 total)<br/>• 37.6% of all Major Increases (38,761 total)</div></div>'
+                ],
+                [
+                  '100+ Enrollees (2016)',
+                  'Major Decreases (2019)',
+                  17478,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">100+ Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>17,478 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 17.2% of 100+ Enrollees category (101,455 total)<br/>• 7.9% of all clinicians (220,556 total)<br/>• 39.1% of all Major Decreases (44,756 total)</div></div>'
+                ]
               ]}
               options={{
                 height: 600,
@@ -1390,6 +1455,7 @@ const SinglePagePamphlet = () => {
                   }
                 },
                 tooltip: {
+                  isHtml: true,
                   textStyle: {
                     fontName: 'Inter',
                     fontSize: 12
@@ -1398,55 +1464,6 @@ const SinglePagePamphlet = () => {
               }}
             />
           </div>
-
-          <DataTable style={{ marginTop: '30px' }}>
-            <thead>
-              <tr>
-                <th>2016 Baseline Volume</th>
-                <th>→ Stable (2019)</th>
-                <th>→ Major Increases (2019)</th>
-                <th>→ Major Decreases (2019)</th>
-                <th>Total Clinicians</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>1-10 Enrollees</strong></td>
-                <td className="number-cell">42.0% (17,601)</td>
-                <td className="number-cell">28.6% (12,000)</td>
-                <td className="number-cell">29.4% (12,305)</td>
-                <td className="number-cell">41,906</td>
-              </tr>
-              <tr>
-                <td><strong>11-50 Enrollees</strong></td>
-                <td className="number-cell">60.0% (27,790)</td>
-                <td className="number-cell">18.4% (8,500)</td>
-                <td className="number-cell">21.6% (10,027)</td>
-                <td className="number-cell">46,317</td>
-              </tr>
-              <tr>
-                <td><strong>51-100 Enrollees</strong></td>
-                <td className="number-cell">72.0% (22,232)</td>
-                <td className="number-cell">12.0% (3,700)</td>
-                <td className="number-cell">16.0% (4,946)</td>
-                <td className="number-cell">30,878</td>
-              </tr>
-              <tr>
-                <td><strong>100+ Enrollees</strong></td>
-                <td className="number-cell">68.4% (69,416)</td>
-                <td className="number-cell">14.4% (14,561)</td>
-                <td className="number-cell">17.2% (17,478)</td>
-                <td className="number-cell">101,455</td>
-              </tr>
-              <tr style={{ backgroundColor: '#dcfce7', fontWeight: 'bold', borderTop: '2px solid #22c55e' }}>
-                <td><strong>RESEARCH TOTALS ✓</strong></td>
-                <td className="number-cell" style={{ color: '#16a34a' }}>62.1% (137,039)</td>
-                <td className="number-cell" style={{ color: '#16a34a' }}>17.6% (38,761)</td>
-                <td className="number-cell" style={{ color: '#16a34a' }}>20.3% (44,756)</td>
-                <td className="number-cell" style={{ color: '#16a34a' }}>220,556</td>
-              </tr>
-            </tbody>
-          </DataTable>
 
           <InsightCard bgColor="#fee2e2" borderColor="#dc2626" style={{ marginTop: '25px' }}>
             <h4>⚠️ Accuracy Disclaimer</h4>

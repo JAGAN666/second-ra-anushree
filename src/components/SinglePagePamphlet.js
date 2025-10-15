@@ -664,7 +664,7 @@ const SinglePagePamphlet = () => {
     labels: ['Stable Volume', 'Major Increases', 'Major Decreases'],
     datasets: [{
       label: 'Clinician Participation (%)',
-      data: [60, 20, 20],
+      data: [62.1, 17.6, 20.3],
       backgroundColor: ['#0072B2', '#E69F00', '#D55E00'],
       borderWidth: 0,
     }]

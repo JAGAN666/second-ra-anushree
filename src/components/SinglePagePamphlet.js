@@ -1519,6 +1519,13 @@ const SinglePagePamphlet = () => {
               <strong>Estimation basis:</strong> Distribution reflects the research finding that "higher baseline volumes significantly predict greater stability," with percentages proportionally calculated to match exact research totals.
             </p>
           </InsightCard>
+
+          <InsightCard bgColor="#E3F2FD" borderColor="#0072B2" style={{ marginTop: '20px' }}>
+            <h4>Key Predictors of Stability</h4>
+            <p>
+              Clinicians serving more than 100 Medicaid patients at baseline were significantly more likely to maintain stable participation. Community Health Center affiliation was associated with greater stability and higher odds of increases. Conversely, rural practice settings were linked to higher odds of major decreases in enrollee volume.
+            </p>
+          </InsightCard>
         </div>
       </DetailedVizPanel>
     );
@@ -1615,17 +1622,6 @@ const SinglePagePamphlet = () => {
 
             {/* Right Column */}
             <div>
-              <Section>
-                <SectionTitle>Predictors of Stability</SectionTitle>
-                <InfoText style={{ marginBottom: '12px' }}>
-                  Clinicians serving more than 100 Medicaid patients at baseline were significantly
-                  more likely to maintain stable participation. Community Health Center affiliation
-                  was associated with greater stability and higher odds of increases. Conversely,
-                  rural practice settings were linked to higher odds of major decreases in enrollee
-                  volume.
-                </InfoText>
-              </Section>
-
               <Section>
                 <SectionTitle>Policy Implications</SectionTitle>
                 <KeyPoints>

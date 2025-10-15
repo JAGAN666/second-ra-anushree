@@ -1443,63 +1443,6 @@ const SinglePagePamphlet = () => {
               </Section>
             </div>
           </MainGrid>
-
-          {/* Study Period Timeline */}
-          <Section>
-            <SectionTitle>Study Timeline</SectionTitle>
-            <TimelineRow>
-              <TimelineItem>
-                <TimelineYear active>2016</TimelineYear>
-                <TimelineLabel>Baseline Year</TimelineLabel>
-              </TimelineItem>
-              <TimelineItem>
-                <TimelineYear>2017</TimelineYear>
-                <TimelineLabel>Year 1 Tracking</TimelineLabel>
-              </TimelineItem>
-              <TimelineItem>
-                <TimelineYear>2018</TimelineYear>
-                <TimelineLabel>Year 2 Tracking</TimelineLabel>
-              </TimelineItem>
-              <TimelineItem>
-                <TimelineYear>2019</TimelineYear>
-                <TimelineLabel>Final Year</TimelineLabel>
-              </TimelineItem>
-              <TimelineItem>
-                <TimelineYear>2025</TimelineYear>
-                <TimelineLabel>Study Published</TimelineLabel>
-              </TimelineItem>
-            </TimelineRow>
-          </Section>
-
-          {/* Bottom Info Boxes */}
-          <ThreeColumnGrid>
-            <InfoBox borderColor="#2c5aa0">
-              <InfoTitle>Methodology</InfoTitle>
-              <InfoText>
-                Used Transformed Medicaid Statistical Information System (T-MSIS) Analytic Files
-                to track changes in unique Medicaid enrollees served. Major changes defined as
-                &gt;90% variation from baseline.
-              </InfoText>
-            </InfoBox>
-
-            <InfoBox borderColor="#28a745">
-              <InfoTitle>Practice Setting Impact</InfoTitle>
-              <InfoText>
-                Community Health Centers showed greater stability and higher odds of increases.
-                Rural settings associated with higher odds of major decreases, highlighting
-                geographic disparities.
-              </InfoText>
-            </InfoBox>
-
-            <InfoBox borderColor="#ffc107">
-              <InfoTitle>Future Research</InfoTitle>
-              <InfoText>
-                Need for continued monitoring of clinician participation patterns, especially
-                as Medicaid programs face potential funding cuts and eligibility changes that
-                could impact provider networks.
-              </InfoText>
-            </InfoBox>
-          </ThreeColumnGrid>
         </Content>
 
         {/* Footer */}

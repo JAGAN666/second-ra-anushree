@@ -7,7 +7,8 @@ import AppEnhanced from './AppEnhanced';
 const port = window.location.port;
 
 // Choose the appropriate app based on port
-const AppToRender = port === '3002' ? AppEnhanced : App;
+// In production (no port), default to AppEnhanced (SinglePagePamphlet)
+const AppToRender = (port === '3002' || !port) ? AppEnhanced : App;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

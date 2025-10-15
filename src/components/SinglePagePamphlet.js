@@ -692,25 +692,6 @@ const SinglePagePamphlet = () => {
     'Physician Associates': { '1-10': 28, '11-50': 24, '51-100': 13, '100+': 35 }
   };
 
-  // Gender distribution from Table 1
-  const genderData = {
-    'Nurse Practitioners': { female: 93, male: 7 },
-    'Family Medicine': { female: 40, male: 60 },
-    'Internal Medicine': { female: 37, male: 63 },
-    'OBGYNs': { female: 57, male: 43 },
-    'Pediatricians': { female: 63, male: 37 },
-    'Physician Associates': { female: 65, male: 35 }
-  };
-
-  // Practice setting data from Table 1
-  const practiceSettingData = {
-    'Nurse Practitioners': { rural: 21, chc: 4 },
-    'Family Medicine': { rural: 25, chc: 5 },
-    'Internal Medicine': { rural: 10, chc: 2 },
-    'OBGYNs': { rural: 12, chc: 3 },
-    'Pediatricians': { rural: 9, chc: 4 },
-    'Physician Associates': { rural: 20, chc: 3 }
-  };
 
   const specialtyStabilityData = {
     labels: ['Nurse Practitioners', 'Family Medicine', 'Internal Medicine', 'OBGYNs', 'Pediatricians', 'Physician Associates'],
@@ -918,9 +899,7 @@ const SinglePagePamphlet = () => {
     { id: 'overview', label: '📊 Overview', icon: '📊' },
     { id: 'specialty', label: '🏥 By Specialty', icon: '🏥' },
     { id: 'trends', label: '📈 Participation Trends', icon: '📈' },
-    { id: 'baseline', label: '📍 Baseline Volume', icon: '📍' },
-    { id: 'gender', label: '👥 Gender Differences', icon: '👥' },
-    { id: 'practice', label: '🏘️ Practice Settings', icon: '🏘️' }
+    { id: 'baseline', label: '📍 Baseline Volume', icon: '📍' }
   ];
 
   // Render functions for each visualization type
@@ -946,10 +925,6 @@ const SinglePagePamphlet = () => {
         return renderTrendsViz();
       case 'baseline':
         return renderBaselineViz();
-      case 'gender':
-        return renderGenderViz();
-      case 'practice':
-        return renderPracticeViz();
       default:
         return renderOverviewViz();
     }
@@ -1181,142 +1156,6 @@ const SinglePagePamphlet = () => {
     );
   };
 
-  const renderGenderViz = () => {
-    const specialtyNames = Object.keys(genderData);
-    const genderChartData = {
-      labels: specialtyNames,
-      datasets: [
-        {
-          label: 'Female (%)',
-          data: specialtyNames.map(s => genderData[s].female),
-          backgroundColor: 'rgba(168, 85, 247, 0.7)',
-          borderColor: '#a855f7',
-          borderWidth: 2
-        },
-        {
-          label: 'Male (%)',
-          data: specialtyNames.map(s => genderData[s].male),
-          backgroundColor: 'rgba(59, 130, 246, 0.7)',
-          borderColor: '#3b82f6',
-          borderWidth: 2
-        }
-      ]
-    };
-
-    return (
-      <DetailedVizPanel>
-        <DetailedChartTitle>Gender Distribution by Specialty</DetailedChartTitle>
-        <DetailedChartSubtitle>
-          Percentage of male and female clinicians across primary care specialties
-        </DetailedChartSubtitle>
-
-        <DetailedChartBox height="550px">
-          <Bar data={genderChartData} options={detailedChartOptions} />
-        </DetailedChartBox>
-
-        <DataTable>
-          <thead>
-            <tr>
-              <th>Specialty</th>
-              <th>Female Clinicians (%)</th>
-              <th>Male Clinicians (%)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {specialtyNames.map(specialty => (
-              <tr key={specialty}>
-                <td><strong>{specialty}</strong></td>
-                <td className="number-cell">{genderData[specialty].female}%</td>
-                <td className="number-cell">{genderData[specialty].male}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </DataTable>
-
-        <InsightCard bgColor="#fce7f3" borderColor="#ec4899">
-          <h4>Gender-Related Findings</h4>
-          <p>
-            The research found varied gender patterns by specialty. Female OBGYNs and Pediatricians had higher odds of experiencing major increases,
-            while female NPs and PAs had lower odds. These differences suggest that gender may interact with specialty-specific practice patterns
-            and opportunities in Medicaid participation.
-          </p>
-        </InsightCard>
-      </DetailedVizPanel>
-    );
-  };
-
-  const renderPracticeViz = () => {
-    const specialtyNames = Object.keys(practiceSettingData);
-    const practiceChartData = {
-      labels: specialtyNames,
-      datasets: [
-        {
-          label: 'Rural Practice (%)',
-          data: specialtyNames.map(s => practiceSettingData[s].rural),
-          backgroundColor: 'rgba(132, 204, 22, 0.7)',
-          borderColor: '#84cc16',
-          borderWidth: 2
-        },
-        {
-          label: 'CHC Affiliation (%)',
-          data: specialtyNames.map(s => practiceSettingData[s].chc),
-          backgroundColor: 'rgba(6, 182, 212, 0.7)',
-          borderColor: '#06b6d4',
-          borderWidth: 2
-        }
-      ]
-    };
-
-    return (
-      <DetailedVizPanel>
-        <DetailedChartTitle>Practice Setting Distribution by Specialty</DetailedChartTitle>
-        <DetailedChartSubtitle>
-          Percentage of clinicians in rural areas and affiliated with Community Health Centers
-        </DetailedChartSubtitle>
-
-        <DetailedChartBox height="550px">
-          <Bar data={practiceChartData} options={detailedChartOptions} />
-        </DetailedChartBox>
-
-        <DataTable>
-          <thead>
-            <tr>
-              <th>Specialty</th>
-              <th>Rural Practice (%)</th>
-              <th>CHC Affiliation (%)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {specialtyNames.map(specialty => (
-              <tr key={specialty}>
-                <td><strong>{specialty}</strong></td>
-                <td className="number-cell">{practiceSettingData[specialty].rural}%</td>
-                <td className="number-cell">{practiceSettingData[specialty].chc}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </DataTable>
-
-        <TwoColumnGrid>
-          <InsightCard bgColor="#dcfce7" borderColor="#16a34a">
-            <h4>Community Health Centers</h4>
-            <p>
-              CHC affiliation was consistently associated with <strong>greater stability and higher odds of increases</strong> across all specialties.
-              CHCs play a crucial role in maintaining stable Medicaid provider networks.
-            </p>
-          </InsightCard>
-          <InsightCard bgColor="#fee2e2" borderColor="#dc2626">
-            <h4>Rural Practice Challenges</h4>
-            <p>
-              Rural practice settings were linked to <strong>higher odds of major decreases</strong> in enrollee volume across most specialties,
-              highlighting geographic disparities and the need for targeted workforce retention strategies.
-            </p>
-          </InsightCard>
-        </TwoColumnGrid>
-      </DetailedVizPanel>
-    );
-  };
-
   return (
     <>
       <GlobalStyle />
@@ -1350,18 +1189,6 @@ const SinglePagePamphlet = () => {
             <StatCard>
               <StatNumber>60%</StatNumber>
               <StatLabel>Stable Volume</StatLabel>
-            </StatCard>
-            <StatCard>
-              <StatNumber>20%</StatNumber>
-              <StatLabel>Major Increases</StatLabel>
-            </StatCard>
-            <StatCard>
-              <StatNumber>20%</StatNumber>
-              <StatLabel>Major Decreases</StatLabel>
-            </StatCard>
-            <StatCard>
-              <StatNumber>26%</StatNumber>
-              <StatLabel>NPs w/ Decreases</StatLabel>
             </StatCard>
             <StatCard>
               <StatNumber>70%</StatNumber>

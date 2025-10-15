@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend, PointElement, LineElement, RadialLinearScale, Filler } from 'chart.js';
 import { Bar, Line, Doughnut, Radar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Chart } from 'react-google-charts';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend, PointElement, LineElement, RadialLinearScale, Filler, ChartDataLabels);
 
@@ -1325,6 +1326,137 @@ const SinglePagePamphlet = () => {
             </p>
           </InsightCard>
         </TwoColumnGrid>
+
+        {/* Sankey Flow Diagram: 2016 Baseline → 2019 Outcomes */}
+        <div style={{ marginTop: '50px', borderTop: '3px solid #e2e8f0', paddingTop: '30px' }}>
+          <DetailedChartTitle>Baseline Volume (2016) → Participation Outcomes (2016-2019)</DetailedChartTitle>
+          <DetailedChartSubtitle>
+            <strong style={{ color: '#dc2626' }}>⚠️ ESTIMATED DISTRIBUTION:</strong> The research paper provides overall outcomes (62.1% stable, 17.6% increases, 20.3% decreases) and baseline volume distribution (19%, 21%, 14%, 45%), but does NOT provide the actual cross-tabulation showing how specific baseline categories flowed to specific outcomes. The distribution below is proportionally estimated to match exact research totals while reflecting the documented correlation between higher baseline volumes and greater stability.
+          </DetailedChartSubtitle>
+
+          <div style={{
+            background: '#fef3c7',
+            border: '2px solid #f59e0b',
+            borderRadius: '8px',
+            padding: '15px',
+            margin: '20px 0',
+            fontSize: '0.9rem',
+            fontWeight: 600
+          }}>
+            <strong>Timeline:</strong> Baseline enrollee volumes measured in 2016 → Participation outcomes tracked through 2019
+          </div>
+
+          <div style={{ height: '600px', marginTop: '20px' }}>
+            <Chart
+              chartType="Sankey"
+              width="100%"
+              height="600px"
+              data={[
+                ['From (2016)', 'To (2019)', 'Clinicians'],
+                // 1-10 enrollees: 41,906 total (42% stable, 28.6% increases, 29.4% decreases)
+                ['1-10 Enrollees (2016)', 'Stable (2019)', 17601],
+                ['1-10 Enrollees (2016)', 'Major Increases (2019)', 12000],
+                ['1-10 Enrollees (2016)', 'Major Decreases (2019)', 12305],
+                // 11-50 enrollees: 46,317 total (60% stable, 18.4% increases, 21.6% decreases)
+                ['11-50 Enrollees (2016)', 'Stable (2019)', 27790],
+                ['11-50 Enrollees (2016)', 'Major Increases (2019)', 8500],
+                ['11-50 Enrollees (2016)', 'Major Decreases (2019)', 10027],
+                // 51-100 enrollees: 30,878 total (72% stable, 12% increases, 16% decreases)
+                ['51-100 Enrollees (2016)', 'Stable (2019)', 22232],
+                ['51-100 Enrollees (2016)', 'Major Increases (2019)', 3700],
+                ['51-100 Enrollees (2016)', 'Major Decreases (2019)', 4946],
+                // 100+ enrollees: 101,455 total (68.4% stable, 14.4% increases, 17.2% decreases)
+                ['100+ Enrollees (2016)', 'Stable (2019)', 69416],
+                ['100+ Enrollees (2016)', 'Major Increases (2019)', 14561],
+                ['100+ Enrollees (2016)', 'Major Decreases (2019)', 17478]
+              ]}
+              options={{
+                height: 600,
+                sankey: {
+                  node: {
+                    colors: ['#dc2626', '#f97316', '#eab308', '#22c55e', '#2c5aa0', '#06b6d4', '#ef4444'],
+                    label: {
+                      fontName: 'Inter',
+                      fontSize: 13,
+                      color: '#1a202c',
+                      bold: true
+                    },
+                    width: 25,
+                    nodePadding: 35
+                  },
+                  link: {
+                    colorMode: 'gradient',
+                    colors: ['#2c5aa0', '#06b6d4', '#ef4444']
+                  }
+                },
+                tooltip: {
+                  textStyle: {
+                    fontName: 'Inter',
+                    fontSize: 12
+                  }
+                }
+              }}
+            />
+          </div>
+
+          <DataTable style={{ marginTop: '30px' }}>
+            <thead>
+              <tr>
+                <th>2016 Baseline Volume</th>
+                <th>→ Stable (2019)</th>
+                <th>→ Major Increases (2019)</th>
+                <th>→ Major Decreases (2019)</th>
+                <th>Total Clinicians</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1-10 Enrollees</strong></td>
+                <td className="number-cell">42.0% (17,601)</td>
+                <td className="number-cell">28.6% (12,000)</td>
+                <td className="number-cell">29.4% (12,305)</td>
+                <td className="number-cell">41,906</td>
+              </tr>
+              <tr>
+                <td><strong>11-50 Enrollees</strong></td>
+                <td className="number-cell">60.0% (27,790)</td>
+                <td className="number-cell">18.4% (8,500)</td>
+                <td className="number-cell">21.6% (10,027)</td>
+                <td className="number-cell">46,317</td>
+              </tr>
+              <tr>
+                <td><strong>51-100 Enrollees</strong></td>
+                <td className="number-cell">72.0% (22,232)</td>
+                <td className="number-cell">12.0% (3,700)</td>
+                <td className="number-cell">16.0% (4,946)</td>
+                <td className="number-cell">30,878</td>
+              </tr>
+              <tr>
+                <td><strong>100+ Enrollees</strong></td>
+                <td className="number-cell">68.4% (69,416)</td>
+                <td className="number-cell">14.4% (14,561)</td>
+                <td className="number-cell">17.2% (17,478)</td>
+                <td className="number-cell">101,455</td>
+              </tr>
+              <tr style={{ backgroundColor: '#dcfce7', fontWeight: 'bold', borderTop: '2px solid #22c55e' }}>
+                <td><strong>RESEARCH TOTALS ✓</strong></td>
+                <td className="number-cell" style={{ color: '#16a34a' }}>62.1% (137,039)</td>
+                <td className="number-cell" style={{ color: '#16a34a' }}>17.6% (38,761)</td>
+                <td className="number-cell" style={{ color: '#16a34a' }}>20.3% (44,756)</td>
+                <td className="number-cell" style={{ color: '#16a34a' }}>220,556</td>
+              </tr>
+            </tbody>
+          </DataTable>
+
+          <InsightCard bgColor="#fee2e2" borderColor="#dc2626" style={{ marginTop: '25px' }}>
+            <h4>⚠️ Accuracy Disclaimer</h4>
+            <p>
+              <strong>What's accurate:</strong> All total numbers (137,039 stable, 38,761 increases, 44,756 decreases, 220,556 total) match the published research exactly.<br/>
+              <strong>What's estimated:</strong> The specific breakdown showing how many clinicians in each baseline volume category ended up in each outcome category. The research does not provide this cross-tabulation.<br/>
+              <strong>Estimation basis:</strong> Distribution reflects the research finding that "higher baseline volumes significantly predict greater stability," with percentages proportionally calculated to match exact research totals.
+            </p>
+          </InsightCard>
+        </div>
       </DetailedVizPanel>
     );
   };

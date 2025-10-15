@@ -5,7 +5,6 @@ import { useInView } from 'react-intersection-observer';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend, PointElement, LineElement, RadialLinearScale, Filler } from 'chart.js';
 import { Bar, Line, Doughnut, Radar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Chart } from 'react-google-charts';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend, PointElement, LineElement, RadialLinearScale, Filler, ChartDataLabels);
 
@@ -896,7 +895,7 @@ const SinglePagePamphlet = () => {
     { id: 'specialty', label: '🏥 By Specialty', icon: '🏥' },
     { id: 'trends', label: '📈 Participation Trends', icon: '📈' },
     { id: 'baseline', label: '📍 Baseline Volume', icon: '📍' },
-    { id: 'flow', label: '🔄 Flow Analysis', icon: '🔄' }
+    { id: 'predictors', label: '🎯 Predictors of Stability', icon: '🎯' }
   ];
 
   // Render functions for each visualization type
@@ -922,8 +921,8 @@ const SinglePagePamphlet = () => {
         return renderTrendsViz();
       case 'baseline':
         return renderBaselineViz();
-      case 'flow':
-        return renderSankeyViz();
+      case 'predictors':
+        return renderPredictorsViz();
       default:
         return renderOverviewViz();
     }
@@ -1155,146 +1154,174 @@ const SinglePagePamphlet = () => {
     );
   };
 
-  const renderSankeyViz = () => {
-    // IMPORTANT: The research paper does not provide actual cross-tabulation data
-    // The distribution below is an illustrative estimate based on research findings that:
-    // - Higher baseline volumes correlate with greater stability
-    // - 51-100 enrollees showed highest stability
-    // - Numbers are proportionally distributed to match exact research totals
+  const renderPredictorsViz = () => {
+    // ALL DATA IN THIS VISUALIZATION IS 100% FROM THE RESEARCH PAPER
+    // Data sources: Table 1 and multivariate analysis results from the study
 
-    // Calculated baseline volumes from research: 220,556 total × distribution (19%, 21%, 14%, 45%)
-    // Baseline totals: 41,906 (1-10) + 46,317 (11-50) + 30,878 (51-100) + 101,455 (100+) = 220,556
+    // Specialty stability data (100% accurate from research Table 1)
+    const specialtyStabilityChartData = {
+      labels: ['Pediatricians', 'OBGYNs', 'Family Medicine', 'Internal Medicine', 'Nurse Practitioners', 'Physician Associates'],
+      datasets: [{
+        label: 'Stability Rate (%)',
+        data: [70, 68, 67, 64, 52, 52],
+        backgroundColor: [
+          'rgba(34, 197, 94, 0.8)',
+          'rgba(34, 197, 94, 0.7)',
+          'rgba(59, 130, 246, 0.8)',
+          'rgba(59, 130, 246, 0.7)',
+          'rgba(239, 68, 68, 0.8)',
+          'rgba(239, 68, 68, 0.7)'
+        ],
+        borderColor: ['#22c55e', '#22c55e', '#3b82f6', '#3b82f6', '#ef4444', '#ef4444'],
+        borderWidth: 2,
+        borderRadius: 6
+      }]
+    };
 
-    const sankeyData = [
-      ['From', 'To', 'Clinicians'],
-      // 1-10 enrollees: 41,906 total (42% stable, 28.6% increases, 29.4% decreases)
-      ['1-10 Enrollees', 'Stable', 17601],
-      ['1-10 Enrollees', 'Major Increases', 12000],
-      ['1-10 Enrollees', 'Major Decreases', 12305],
-      // 11-50 enrollees: 46,317 total (60% stable, 18.4% increases, 21.6% decreases)
-      ['11-50 Enrollees', 'Stable', 27790],
-      ['11-50 Enrollees', 'Major Increases', 8500],
-      ['11-50 Enrollees', 'Major Decreases', 10027],
-      // 51-100 enrollees: 30,878 total (72% stable, 12% increases, 16% decreases)
-      ['51-100 Enrollees', 'Stable', 22232],
-      ['51-100 Enrollees', 'Major Increases', 3700],
-      ['51-100 Enrollees', 'Major Decreases', 4946],
-      // 100+ enrollees: 101,455 total (68.4% stable, 14.4% increases, 17.2% decreases)
-      ['100+ Enrollees', 'Stable', 69416],
-      ['100+ Enrollees', 'Major Increases', 14561],
-      ['100+ Enrollees', 'Major Decreases', 17478]
-    ];
-
-    const sankeyOptions = {
-      height: 600,
-      sankey: {
-        node: {
-          colors: ['#1e3a8a', '#3b82f6', '#60a5fa', '#93c5fd', '#22c55e', '#06b6d4', '#ef4444'],
-          label: {
-            fontName: 'Inter',
-            fontSize: 14,
-            color: '#1a202c',
-            bold: true
-          },
-          width: 20,
-          nodePadding: 40
+    // Baseline volume distribution by specialty (100% accurate from research Table 1)
+    const baselineVolumeBySpecialty = {
+      labels: ['Peds', 'OBGYNs', 'Family Med', 'Internal Med', 'NPs', 'PAs'],
+      datasets: [
+        {
+          label: '100+ Enrollees',
+          data: [72, 49, 54, 31, 36, 35],
+          backgroundColor: 'rgba(34, 197, 94, 0.8)',
+          borderColor: '#22c55e',
+          borderWidth: 1
         },
-        link: {
-          colorMode: 'gradient',
-          colors: ['#22c55e', '#06b6d4', '#ef4444']
+        {
+          label: '51-100 Enrollees',
+          data: [8, 17, 14, 17, 14, 13],
+          backgroundColor: 'rgba(59, 130, 246, 0.8)',
+          borderColor: '#3b82f6',
+          borderWidth: 1
+        },
+        {
+          label: '11-50 Enrollees',
+          data: [10, 21, 18, 27, 25, 24],
+          backgroundColor: 'rgba(249, 115, 22, 0.8)',
+          borderColor: '#f97316',
+          borderWidth: 1
+        },
+        {
+          label: '1-10 Enrollees',
+          data: [10, 14, 13, 24, 24, 28],
+          backgroundColor: 'rgba(239, 68, 68, 0.8)',
+          borderColor: '#ef4444',
+          borderWidth: 1
+        }
+      ]
+    };
+
+    const stackedBarOptions = {
+      ...detailedChartOptions,
+      scales: {
+        x: {
+          stacked: true,
+          grid: { display: false },
+          ticks: { font: { size: 11, weight: 'bold' } }
+        },
+        y: {
+          stacked: true,
+          grid: { color: '#e2e8f0' },
+          ticks: {
+            font: { size: 11, weight: 'bold' },
+            callback: function(value) { return value + '%'; }
+          },
+          max: 100
         }
       },
-      tooltip: {
-        textStyle: {
-          fontName: 'Inter',
-          fontSize: 13
-        }
+      plugins: {
+        ...detailedChartOptions.plugins,
+        datalabels: { display: false }
       }
     };
 
     return (
       <DetailedVizPanel>
-        <DetailedChartTitle>Participation Flow: Baseline Volume to Outcomes</DetailedChartTitle>
+        <DetailedChartTitle>Predictors of Stable Medicaid Participation</DetailedChartTitle>
         <DetailedChartSubtitle>
-          <strong>Illustrative visualization</strong> showing estimated distribution of how clinicians in different baseline volume categories (2016)
-          may have transitioned to participation outcomes (2016-2019). Cross-tabulation data not available in source research;
-          distribution is proportionally estimated to match exact research totals while reflecting documented correlation between higher baseline volumes and greater stability.
+          Research-identified factors associated with maintaining consistent Medicaid enrollee volumes (2016-2019).
+          All data from published study results.
         </DetailedChartSubtitle>
 
-        <div style={{ height: '600px', marginTop: '20px' }}>
-          <Chart
-            chartType="Sankey"
-            width="100%"
-            height="600px"
-            data={sankeyData}
-            options={sankeyOptions}
-          />
-        </div>
+        {/* Chart 1: Stability Rates by Specialty */}
+        <DetailedChartBox height="400px">
+          <Bar data={specialtyStabilityChartData} options={detailedChartOptions} />
+        </DetailedChartBox>
 
+        <InsightCard bgColor="#dcfce7" borderColor="#16a34a" style={{ marginTop: '20px' }}>
+          <h4>Specialty Predictor</h4>
+          <p>
+            <strong>Pediatricians (70%) and OBGYNs (68%)</strong> showed highest stability rates, likely due to routine well-child visits and prenatal care.
+            <strong>Nurse Practitioners and Physician Associates (52% each)</strong> had lowest stability, potentially influenced by "incident to" billing practices and evolving practice patterns.
+          </p>
+        </InsightCard>
+
+        {/* Chart 2: Baseline Volume Distribution */}
+        <DetailedChartBox height="450px" style={{ marginTop: '30px' }}>
+          <Bar data={baselineVolumeBySpecialty} options={stackedBarOptions} />
+        </DetailedChartBox>
+
+        <InsightCard bgColor="#ddd6fe" borderColor="#7c3aed" style={{ marginTop: '20px' }}>
+          <h4>Baseline Volume Predictor</h4>
+          <p>
+            Research found that <strong>clinicians serving &gt;100 Medicaid patients at baseline were significantly more likely to maintain stable participation</strong>.
+            Pediatricians had the highest proportion (72%) with 100+ baseline enrollees, correlating with their high stability rate (70%).
+          </p>
+        </InsightCard>
+
+        {/* Data Table: Key Predictors from Research */}
         <DataTable style={{ marginTop: '30px' }}>
           <thead>
             <tr>
-              <th>Baseline Volume Category</th>
-              <th>To Stable</th>
-              <th>To Major Increases</th>
-              <th>To Major Decreases</th>
-              <th>Total Clinicians</th>
+              <th>Predictor</th>
+              <th>Finding</th>
+              <th>Impact on Stability</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>1-10 Enrollees</strong></td>
-              <td className="number-cell">42.0% (17,601)</td>
-              <td className="number-cell">28.6% (12,000)</td>
-              <td className="number-cell">29.4% (12,305)</td>
-              <td className="number-cell">41,906</td>
+              <td><strong>High Baseline Volume</strong></td>
+              <td>&gt;100 Medicaid enrollees in 2016</td>
+              <td className="number-cell" style={{ color: '#22c55e' }}>↑ Higher Stability</td>
             </tr>
             <tr>
-              <td><strong>11-50 Enrollees</strong></td>
-              <td className="number-cell">60.0% (27,790)</td>
-              <td className="number-cell">18.4% (8,500)</td>
-              <td className="number-cell">21.6% (10,027)</td>
-              <td className="number-cell">46,317</td>
+              <td><strong>Community Health Center</strong></td>
+              <td>CHC affiliation</td>
+              <td className="number-cell" style={{ color: '#22c55e' }}>↑ Higher Stability</td>
             </tr>
             <tr>
-              <td><strong>51-100 Enrollees</strong></td>
-              <td className="number-cell">72.0% (22,232)</td>
-              <td className="number-cell">12.0% (3,700)</td>
-              <td className="number-cell">16.0% (4,946)</td>
-              <td className="number-cell">30,878</td>
+              <td><strong>Specialty</strong></td>
+              <td>Pediatrics, OB/GYN</td>
+              <td className="number-cell" style={{ color: '#22c55e' }}>↑ Higher Stability</td>
             </tr>
             <tr>
-              <td><strong>100+ Enrollees</strong></td>
-              <td className="number-cell">68.4% (69,416)</td>
-              <td className="number-cell">14.4% (14,561)</td>
-              <td className="number-cell">17.2% (17,478)</td>
-              <td className="number-cell">101,455</td>
+              <td><strong>Rural Practice</strong></td>
+              <td>Rural location</td>
+              <td className="number-cell" style={{ color: '#ef4444' }}>↓ Lower Stability</td>
             </tr>
-            <tr style={{ backgroundColor: '#f8fafc', fontWeight: 'bold' }}>
-              <td><strong>TOTAL (from research)</strong></td>
-              <td className="number-cell">62.1% (137,039)</td>
-              <td className="number-cell">17.6% (38,761)</td>
-              <td className="number-cell">20.3% (44,756)</td>
-              <td className="number-cell">220,556</td>
+            <tr>
+              <td><strong>Low Baseline Volume</strong></td>
+              <td>1-10 Medicaid enrollees in 2016</td>
+              <td className="number-cell" style={{ color: '#ef4444' }}>↓ Lower Stability</td>
             </tr>
           </tbody>
         </DataTable>
 
         <TwoColumnGrid style={{ marginTop: '25px' }}>
-          <InsightCard bgColor="#ddd6fe" borderColor="#7c3aed">
-            <h4>Illustrative Pattern: Volume-Stability Correlation</h4>
+          <InsightCard bgColor="#e0f2fe" borderColor="#0284c7">
+            <h4>Policy Implications</h4>
             <p>
-              This estimated distribution shows <strong>51-100 baseline enrollees with 72% stability</strong>,
-              compared to 42% for those with 1-10 enrollees. Research confirms higher baseline volumes predict greater stability,
-              though exact cross-tabulation percentages were not published in the source study.
+              Supporting Community Health Centers and addressing rural provider challenges may help stabilize Medicaid networks.
+              Baseline volume emerges as a strong predictor, suggesting focus on maintaining existing patient panels.
             </p>
           </InsightCard>
-          <InsightCard bgColor="#e0f2fe" borderColor="#0284c7">
-            <h4>Data Accuracy Note</h4>
+          <InsightCard bgColor="#fef3c7" borderColor="#f59e0b">
+            <h4>Data Source</h4>
             <p>
-              <strong>All total numbers match the research exactly</strong> (137,039 stable, 38,761 increases, 44,756 decreases).
-              The baseline category distribution is proportionally estimated to reflect the documented correlation
-              between higher volumes and stability, while ensuring mathematical accuracy.
+              All statistics from published research analyzing 220,556 primary care clinicians across 40 states (2016-2019).
+              Multivariate regression identified independent predictors of stable participation.
             </p>
           </InsightCard>
         </TwoColumnGrid>

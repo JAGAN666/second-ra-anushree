@@ -681,14 +681,15 @@ const SinglePagePamphlet = () => {
   const [selectedViz, setSelectedViz] = useState(null);
 
   // Actual data from research paper
-  // COLORBLIND-FRIENDLY PALETTE (Okabe-Ito):
-  // Blue (#0072B2) = Stable | Orange (#E69F00) = Increases | Vermillion (#D55E00) = Decreases
+  // OVERVIEW TAB - COLORBLIND-SAFE PALETTE:
+  // Sky Blue (#0EA5E9) = Stable | Amber (#F59E0B) = Increases | Pink (#EC4899) = Decreases
+  // These colors are distinguishable for all types of colorblindness
   const participationData = {
     labels: ['Stable Volume', 'Major Increases', 'Major Decreases'],
     datasets: [{
       label: 'Clinician Participation (%)',
       data: [62.1, 17.6, 20.3],
-      backgroundColor: ['#0072B2', '#E69F00', '#D55E00'],
+      backgroundColor: ['#0EA5E9', '#F59E0B', '#EC4899'],
       borderWidth: 0,
     }]
   };
@@ -732,15 +733,15 @@ const SinglePagePamphlet = () => {
       {
         label: 'Major Increases (%)',
         data: [22, 14, 17, 16, 14, 24],
-        backgroundColor: 'rgba(230, 159, 0, 0.8)',
-        borderColor: '#E69F00',
+        backgroundColor: 'rgba(16, 185, 129, 0.8)',
+        borderColor: '#10B981',
         borderWidth: 1,
       },
       {
         label: 'Major Decreases (%)',
         data: [26, 20, 19, 16, 16, 24],
-        backgroundColor: 'rgba(213, 94, 0, 0.8)',
-        borderColor: '#D55E00',
+        backgroundColor: 'rgba(239, 68, 68, 0.8)',
+        borderColor: '#EF4444',
         borderWidth: 1,
       }
     ]
@@ -1069,7 +1070,7 @@ const SinglePagePamphlet = () => {
         <Doughnut data={participationData} options={detailedDoughnutOptions} />
       </DetailedChartBox>
 
-      <InsightCard bgColor="#E3F2FD" borderColor="#0072B2">
+      <InsightCard bgColor="#E0F2FE" borderColor="#0EA5E9">
         <h4>Key Insight</h4>
         <p>
           While 62.1% of clinicians maintained stable Medicaid participation, 37.9% experienced major fluctuations (17.6% increases, 20.3% decreases).
@@ -1087,22 +1088,22 @@ const SinglePagePamphlet = () => {
         {
           label: 'Stable Volume (%)',
           data: specialtyLabels.map(s => detailedSpecialtyData[s].stablePct),
-          backgroundColor: 'rgba(0, 114, 178, 0.8)',
-          borderColor: '#0072B2',
+          backgroundColor: 'rgba(139, 92, 246, 0.8)',
+          borderColor: '#8B5CF6',
           borderWidth: 2
         },
         {
           label: 'Major Increases (%)',
           data: specialtyLabels.map(s => detailedSpecialtyData[s].increasesPct),
-          backgroundColor: 'rgba(230, 159, 0, 0.8)',
-          borderColor: '#E69F00',
+          backgroundColor: 'rgba(16, 185, 129, 0.8)',
+          borderColor: '#10B981',
           borderWidth: 2
         },
         {
           label: 'Major Decreases (%)',
           data: specialtyLabels.map(s => detailedSpecialtyData[s].decreasesPct),
-          backgroundColor: 'rgba(213, 94, 0, 0.8)',
-          borderColor: '#D55E00',
+          backgroundColor: 'rgba(239, 68, 68, 0.8)',
+          borderColor: '#EF4444',
           borderWidth: 2
         }
       ]
@@ -1120,14 +1121,14 @@ const SinglePagePamphlet = () => {
         </DetailedChartBox>
 
         <TwoColumnGrid>
-          <InsightCard bgColor="#E3F2FD" borderColor="#0072B2">
+          <InsightCard bgColor="#F3E8FF" borderColor="#8B5CF6">
             <h4>Most Stable Specialties</h4>
             <p>
               <strong>Pediatricians (70%)</strong> and <strong>OBGYNs (68%)</strong> demonstrated the highest stability rates.
               This may be attributed to the routine nature of well-child visits and prenatal care, which are often unavoidable services.
             </p>
           </InsightCard>
-          <InsightCard bgColor="#FBE9E7" borderColor="#D55E00">
+          <InsightCard bgColor="#FEE2E2" borderColor="#EF4444">
             <h4>Highest Volatility</h4>
             <p>
               <strong>Nurse Practitioners (26% decreases)</strong> and <strong>Physician Associates (24% increases/decreases)</strong> showed
@@ -1150,7 +1151,7 @@ const SinglePagePamphlet = () => {
         <Bar data={majorChangesData} options={detailedChartOptions} />
       </DetailedChartBox>
 
-      <InsightCard bgColor="#FFF3E0" borderColor="#E69F00">
+      <InsightCard bgColor="#D1FAE5" borderColor="#10B981">
         <h4>Pattern Analysis</h4>
         <p>
           The bidirectional nature of changes suggests that Medicaid participation is influenced by multiple dynamic factors including
@@ -1516,8 +1517,9 @@ const SinglePagePamphlet = () => {
                 height: 600,
                 sankey: {
                   node: {
-                    // Colorblind-friendly palette: baseline volumes + outcomes
-                    colors: ['#D55E00', '#E69F00', '#56B4E9', '#0072B2', '#0072B2', '#E69F00', '#D55E00'],
+                    // Combined colorblind-safe palette: Purple-Green-Red gradient (baseline) + Blue-Amber-Pink (outcomes)
+                    // Baseline volumes (left): Violet to Green gradient, Outcomes (right): Sky Blue, Amber, Pink
+                    colors: ['#EF4444', '#F59E0B', '#10B981', '#8B5CF6', '#0EA5E9', '#F59E0B', '#EC4899'],
                     label: {
                       fontName: 'Inter',
                       fontSize: 13,
@@ -1528,8 +1530,8 @@ const SinglePagePamphlet = () => {
                     nodePadding: 35
                   },
                   link: {
-                    colorMode: 'gradient',
-                    colors: ['#0072B2', '#E69F00', '#D55E00']
+                    colorMode: 'target',
+                    colors: ['#0EA5E9', '#F59E0B', '#EC4899']
                   }
                 },
                 tooltip: {

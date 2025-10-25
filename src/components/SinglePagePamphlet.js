@@ -446,7 +446,7 @@ const VizSelectorContainer = styled.div`
 
 const VizTabsRow = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 
   @media (max-width: 968px) {
@@ -727,26 +727,6 @@ const SinglePagePamphlet = () => {
     }]
   };
 
-  const majorChangesData = {
-    labels: ['NPs', 'FPs', 'IMs', 'OBGYNs', 'Peds', 'PAs'],
-    datasets: [
-      {
-        label: 'Major Increases (%)',
-        data: [22, 14, 17, 16, 14, 24],
-        backgroundColor: 'rgba(16, 185, 129, 0.8)',
-        borderColor: '#10B981',
-        borderWidth: 1,
-      },
-      {
-        label: 'Major Decreases (%)',
-        data: [26, 20, 19, 16, 16, 24],
-        backgroundColor: 'rgba(239, 68, 68, 0.8)',
-        borderColor: '#EF4444',
-        borderWidth: 1,
-      }
-    ]
-  };
-
   const baselineVolumeData = {
     labels: ['1-10', '11-50', '51-100', '100+'],
     datasets: [{
@@ -1023,9 +1003,8 @@ const SinglePagePamphlet = () => {
   // Visualization tabs configuration
   const vizTabs = [
     { id: 'overview', label: '📊 Overview', icon: '📊' },
-    { id: 'specialty', label: '🏥 By Specialty', icon: '🏥' },
-    { id: 'trends', label: '📈 Participation Trends', icon: '📈' },
-    { id: 'baseline', label: '📍 Baseline Volume', icon: '📍' },
+    { id: 'specialty', label: '🏥 By Specialty/Profession', icon: '🏥' },
+    { id: 'baseline', label: '📍 Baseline Enrollee Volume Differences', icon: '📍' },
     { id: 'predictors', label: '🎯 Predictors of Stability', icon: '🎯' }
   ];
 
@@ -1048,8 +1027,6 @@ const SinglePagePamphlet = () => {
         return renderOverviewViz();
       case 'specialty':
         return renderSpecialtyViz();
-      case 'trends':
-        return renderTrendsViz();
       case 'baseline':
         return renderBaselineViz();
       case 'predictors':
@@ -1073,8 +1050,7 @@ const SinglePagePamphlet = () => {
       <InsightCard bgColor="#E0F2FE" borderColor="#0EA5E9">
         <h4>Key Insight</h4>
         <p>
-          While 62.1% of clinicians maintained stable Medicaid participation, 37.9% experienced major fluctuations (17.6% increases, 20.3% decreases).
-          This suggests that access to care may be more volatile than previously understood, highlighting the need for policies supporting consistent clinician engagement.
+          Patterns suggest that access to care may be more volatile than previously understood, highlighting the need for policies supporting consistent clinician engagement.
         </p>
       </InsightCard>
     </DetailedVizPanel>
@@ -1088,22 +1064,22 @@ const SinglePagePamphlet = () => {
         {
           label: 'Stable Volume (%)',
           data: specialtyLabels.map(s => detailedSpecialtyData[s].stablePct),
-          backgroundColor: 'rgba(139, 92, 246, 0.8)',
-          borderColor: '#8B5CF6',
+          backgroundColor: 'rgba(14, 165, 233, 0.8)',
+          borderColor: '#0EA5E9',
           borderWidth: 2
         },
         {
           label: 'Major Increases (%)',
           data: specialtyLabels.map(s => detailedSpecialtyData[s].increasesPct),
-          backgroundColor: 'rgba(16, 185, 129, 0.8)',
-          borderColor: '#10B981',
+          backgroundColor: 'rgba(245, 158, 11, 0.8)',
+          borderColor: '#F59E0B',
           borderWidth: 2
         },
         {
           label: 'Major Decreases (%)',
           data: specialtyLabels.map(s => detailedSpecialtyData[s].decreasesPct),
-          backgroundColor: 'rgba(239, 68, 68, 0.8)',
-          borderColor: '#EF4444',
+          backgroundColor: 'rgba(236, 72, 153, 0.8)',
+          borderColor: '#EC4899',
           borderWidth: 2
         }
       ]
@@ -1113,7 +1089,7 @@ const SinglePagePamphlet = () => {
       <DetailedVizPanel>
         <DetailedChartTitle>Participation Patterns by Specialty</DetailedChartTitle>
         <DetailedChartSubtitle>
-          Detailed breakdown showing stable participation, major increases, and major decreases for each primary care specialty
+          Detailed breakdown showing stable participation, major increases, and major decreases for each primary care specialty. Hover to see sample sizes.
         </DetailedChartSubtitle>
 
         <DetailedChartBox height="600px">
@@ -1121,14 +1097,14 @@ const SinglePagePamphlet = () => {
         </DetailedChartBox>
 
         <TwoColumnGrid>
-          <InsightCard bgColor="#F3E8FF" borderColor="#8B5CF6">
+          <InsightCard bgColor="#E0F2FE" borderColor="#0EA5E9">
             <h4>Most Stable Specialties</h4>
             <p>
               <strong>Pediatricians (70%)</strong> and <strong>OBGYNs (68%)</strong> demonstrated the highest stability rates.
               This may be attributed to the routine nature of well-child visits and prenatal care, which are often unavoidable services.
             </p>
           </InsightCard>
-          <InsightCard bgColor="#FEE2E2" borderColor="#EF4444">
+          <InsightCard bgColor="#FCE7F3" borderColor="#EC4899">
             <h4>Highest Volatility</h4>
             <p>
               <strong>Nurse Practitioners (26% decreases)</strong> and <strong>Physician Associates (24% increases/decreases)</strong> showed
@@ -1139,28 +1115,6 @@ const SinglePagePamphlet = () => {
       </DetailedVizPanel>
     );
   };
-
-  const renderTrendsViz = () => (
-    <DetailedVizPanel>
-      <DetailedChartTitle>Participation Trends: Increases vs Decreases</DetailedChartTitle>
-      <DetailedChartSubtitle>
-        Comparison of major increases and decreases in Medicaid enrollee volumes across specialties
-      </DetailedChartSubtitle>
-
-      <DetailedChartBox height="550px">
-        <Bar data={majorChangesData} options={detailedChartOptions} />
-      </DetailedChartBox>
-
-      <InsightCard bgColor="#D1FAE5" borderColor="#10B981">
-        <h4>Pattern Analysis</h4>
-        <p>
-          The bidirectional nature of changes suggests that Medicaid participation is influenced by multiple dynamic factors including
-          reimbursement rates, managed care contracting, practice transitions, and local market conditions. 37.9% of clinicians
-          experienced substantial changes (17.6% increases, 20.3% decreases), indicating significant workforce volatility.
-        </p>
-      </InsightCard>
-    </DetailedVizPanel>
-  );
 
   const renderBaselineViz = () => {
     const specialtyNames = Object.keys(baselineBySpecialty);
@@ -1237,9 +1191,9 @@ const SinglePagePamphlet = () => {
 
     return (
       <DetailedVizPanel>
-        <DetailedChartTitle>Baseline Enrollee Volume Distribution by Specialty</DetailedChartTitle>
+        <DetailedChartTitle>Baseline Enrollee Volume Distribution by Specialty/Profession</DetailedChartTitle>
         <DetailedChartSubtitle>
-          Percentage of clinicians in each baseline enrollee volume category (2016)
+          Baseline differences in enrollee volume highlight varying levels of Medicaid engagement and the share of provider panels made up of Medicaid patients.
         </DetailedChartSubtitle>
 
         <DetailedChartBox height="550px">
@@ -1409,20 +1363,8 @@ const SinglePagePamphlet = () => {
         <div>
           <DetailedChartTitle>Baseline Volume (2016) → Participation Outcomes (2016-2019)</DetailedChartTitle>
           <DetailedChartSubtitle>
-            <strong style={{ color: '#dc2626' }}>⚠️ ESTIMATED DISTRIBUTION:</strong> The research paper provides overall outcomes (62.1% stable, 17.6% increases, 20.3% decreases) and baseline volume distribution (19%, 21%, 14%, 45%), but does NOT provide the actual cross-tabulation showing how specific baseline categories flowed to specific outcomes. The distribution below is proportionally estimated to match exact research totals while reflecting the documented correlation between higher baseline volumes and greater stability.
+            Flow diagram showing how clinicians in different baseline enrollee volume categories (2016) transitioned to stable participation, major increases, or major decreases (2016-2019).
           </DetailedChartSubtitle>
-
-          <div style={{
-            background: '#fef3c7',
-            border: '2px solid #f59e0b',
-            borderRadius: '8px',
-            padding: '15px',
-            margin: '20px 0',
-            fontSize: '0.9rem',
-            fontWeight: 600
-          }}>
-            <strong>Timeline:</strong> Baseline enrollee volumes measured in 2016 → Participation outcomes tracked through 2019
-          </div>
 
           <div style={{ height: '600px', marginTop: '20px' }}>
             <Chart
@@ -1436,90 +1378,104 @@ const SinglePagePamphlet = () => {
                   'Clinicians',
                   { type: 'string', role: 'tooltip', p: { html: true } }
                 ],
-                // 1-10 enrollees: 41,906 total (42% stable, 28.6% increases, 29.4% decreases)
+                // 1-10 enrollees: 42,746 total
                 [
                   '1-10 Enrollees (2016)',
                   'Stable (2019)',
-                  17601,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">1-10 Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>17,601 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 42.0% of 1-10 Enrollees category (41,906 total)<br/>• 8.0% of all clinicians (220,556 total)<br/>• 12.8% of all Stable outcomes (137,039 total)</div></div>'
+                  11360,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">1-10 Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>11,360 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 26.6% of 1-10 Enrollees category (42,746 total)<br/>• 5.2% of all clinicians (220,556 total)</div></div>'
                 ],
                 [
                   '1-10 Enrollees (2016)',
                   'Major Increases (2019)',
-                  12000,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">1-10 Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>12,000 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 28.6% of 1-10 Enrollees category (41,906 total)<br/>• 5.4% of all clinicians (220,556 total)<br/>• 31.0% of all Major Increases (38,761 total)</div></div>'
+                  15359,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">1-10 Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>15,359 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 35.9% of 1-10 Enrollees category (42,746 total)<br/>• 7.0% of all clinicians (220,556 total)</div></div>'
                 ],
                 [
                   '1-10 Enrollees (2016)',
                   'Major Decreases (2019)',
-                  12305,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">1-10 Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>12,305 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 29.4% of 1-10 Enrollees category (41,906 total)<br/>• 5.6% of all clinicians (220,556 total)<br/>• 27.5% of all Major Decreases (44,756 total)</div></div>'
+                  16027,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">1-10 Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>16,027 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 37.5% of 1-10 Enrollees category (42,746 total)<br/>• 7.3% of all clinicians (220,556 total)</div></div>'
                 ],
-                // 11-50 enrollees: 46,317 total (60% stable, 18.4% increases, 21.6% decreases)
+                // 11-50 enrollees: 47,507 total
                 [
                   '11-50 Enrollees (2016)',
                   'Stable (2019)',
-                  27790,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">11-50 Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>27,790 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 60.0% of 11-50 Enrollees category (46,317 total)<br/>• 12.6% of all clinicians (220,556 total)<br/>• 20.3% of all Stable outcomes (137,039 total)</div></div>'
+                  24628,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">11-50 Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>24,628 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 51.8% of 11-50 Enrollees category (47,507 total)<br/>• 11.2% of all clinicians (220,556 total)</div></div>'
                 ],
                 [
                   '11-50 Enrollees (2016)',
                   'Major Increases (2019)',
-                  8500,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">11-50 Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>8,500 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 18.4% of 11-50 Enrollees category (46,317 total)<br/>• 3.9% of all clinicians (220,556 total)<br/>• 21.9% of all Major Increases (38,761 total)</div></div>'
+                  12019,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">11-50 Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>12,019 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 25.3% of 11-50 Enrollees category (47,507 total)<br/>• 5.5% of all clinicians (220,556 total)</div></div>'
                 ],
                 [
                   '11-50 Enrollees (2016)',
                   'Major Decreases (2019)',
-                  10027,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">11-50 Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>10,027 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 21.6% of 11-50 Enrollees category (46,317 total)<br/>• 4.5% of all clinicians (220,556 total)<br/>• 22.4% of all Major Decreases (44,756 total)</div></div>'
+                  10860,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">11-50 Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>10,860 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 22.9% of 11-50 Enrollees category (47,507 total)<br/>• 4.9% of all clinicians (220,556 total)</div></div>'
                 ],
-                // 51-100 enrollees: 30,878 total (72% stable, 12% increases, 16% decreases)
+                // 51-100 enrollees: 31,523 total
                 [
                   '51-100 Enrollees (2016)',
                   'Stable (2019)',
-                  22232,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">51-100 Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>22,232 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 72.0% of 51-100 Enrollees category (30,878 total)<br/>• 10.1% of all clinicians (220,556 total)<br/>• 16.2% of all Stable outcomes (137,039 total)</div></div>'
+                  20756,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">51-100 Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>20,756 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 65.8% of 51-100 Enrollees category (31,523 total)<br/>• 9.4% of all clinicians (220,556 total)</div></div>'
                 ],
                 [
                   '51-100 Enrollees (2016)',
                   'Major Increases (2019)',
-                  3700,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">51-100 Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>3,700 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 12.0% of 51-100 Enrollees category (30,878 total)<br/>• 1.7% of all clinicians (220,556 total)<br/>• 9.5% of all Major Increases (38,761 total)</div></div>'
+                  5123,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">51-100 Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>5,123 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 16.3% of 51-100 Enrollees category (31,523 total)<br/>• 2.3% of all clinicians (220,556 total)</div></div>'
                 ],
                 [
                   '51-100 Enrollees (2016)',
                   'Major Decreases (2019)',
-                  4946,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">51-100 Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>4,946 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 16.0% of 51-100 Enrollees category (30,878 total)<br/>• 2.2% of all clinicians (220,556 total)<br/>• 11.1% of all Major Decreases (44,756 total)</div></div>'
+                  5644,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">51-100 Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>5,644 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 17.9% of 51-100 Enrollees category (31,523 total)<br/>• 2.6% of all clinicians (220,556 total)</div></div>'
                 ],
-                // 100+ enrollees: 101,455 total (68.4% stable, 14.4% increases, 17.2% decreases)
+                // 100+ enrollees: 109,686 total
                 [
                   '100+ Enrollees (2016)',
                   'Stable (2019)',
-                  69416,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">100+ Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>69,416 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 68.4% of 100+ Enrollees category (101,455 total)<br/>• 31.5% of all clinicians (220,556 total)<br/>• 50.7% of all Stable outcomes (137,039 total)</div></div>'
+                  89101,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">100+ Enrollees → Stable</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>89,101 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 81.2% of 100+ Enrollees category (109,686 total)<br/>• 40.4% of all clinicians (220,556 total)</div></div>'
                 ],
                 [
                   '100+ Enrollees (2016)',
                   'Major Increases (2019)',
-                  14561,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">100+ Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>14,561 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 14.4% of 100+ Enrollees category (101,455 total)<br/>• 6.6% of all clinicians (220,556 total)<br/>• 37.6% of all Major Increases (38,761 total)</div></div>'
+                  6360,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">100+ Enrollees → Major Increases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>6,360 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 5.8% of 100+ Enrollees category (109,686 total)<br/>• 2.9% of all clinicians (220,556 total)</div></div>'
                 ],
                 [
                   '100+ Enrollees (2016)',
                   'Major Decreases (2019)',
-                  17478,
-                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">100+ Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>17,478 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 17.2% of 100+ Enrollees category (101,455 total)<br/>• 7.9% of all clinicians (220,556 total)<br/>• 39.1% of all Major Decreases (44,756 total)</div></div>'
+                  14225,
+                  '<div style="padding: 12px; font-family: Inter, sans-serif; line-height: 1.6;"><strong style="font-size: 14px; color: #1a202c;">100+ Enrollees → Major Decreases</strong><hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;"/><div style="font-size: 13px;"><strong>14,225 clinicians</strong></div><div style="margin-top: 6px; font-size: 12px; color: #64748b;">• 13.0% of 100+ Enrollees category (109,686 total)<br/>• 6.4% of all clinicians (220,556 total)</div></div>'
                 ]
               ]}
               options={{
                 height: 600,
                 sankey: {
                   node: {
-                    // Combined colorblind-safe palette: Purple-Green-Red gradient (baseline) + Blue-Amber-Pink (outcomes)
-                    // Baseline volumes (left): Violet to Green gradient, Outcomes (right): Sky Blue, Amber, Pink
-                    colors: ['#EF4444', '#F59E0B', '#10B981', '#8B5CF6', '#0EA5E9', '#F59E0B', '#EC4899'],
+                    // Google Charts assigns colors based on node appearance order in data array:
+                    // Index 0: 1-10 Enrollees (2016) - first source node
+                    // Index 1: Stable (2019) - first destination
+                    // Index 2: Major Increases (2019) - second destination
+                    // Index 3: Major Decreases (2019) - third destination
+                    // Index 4: 11-50 Enrollees (2016) - second source node
+                    // Index 5: 51-100 Enrollees (2016) - third source node
+                    // Index 6: 100+ Enrollees (2016) - fourth source node
+                    colors: [
+                      '#D55E00', // Index 0: 1-10 Enrollees (Vermillion from Baseline chart)
+                      '#0EA5E9', // Index 1: Stable (Sky Blue from Overview)
+                      '#F59E0B', // Index 2: Major Increases (Amber from Overview)
+                      '#EC4899', // Index 3: Major Decreases (Pink from Overview)
+                      '#E69F00', // Index 4: 11-50 Enrollees (Amber from Baseline chart)
+                      '#56B4E9', // Index 5: 51-100 Enrollees (Sky Blue from Baseline chart)
+                      '#0072B2'  // Index 6: 100+ Enrollees (Blue from Baseline chart)
+                    ],
                     label: {
                       fontName: 'Inter',
                       fontSize: 13,
@@ -1530,8 +1486,8 @@ const SinglePagePamphlet = () => {
                     nodePadding: 35
                   },
                   link: {
-                    colorMode: 'target',
-                    colors: ['#0EA5E9', '#F59E0B', '#EC4899']
+                    // Gradient mode creates smooth transitions from source node color to target node color
+                    colorMode: 'gradient'
                   }
                 },
                 tooltip: {
@@ -1545,19 +1501,50 @@ const SinglePagePamphlet = () => {
             />
           </div>
 
-          <InsightCard bgColor="#fee2e2" borderColor="#dc2626" style={{ marginTop: '25px' }}>
-            <h4>⚠️ Accuracy Disclaimer</h4>
-            <p>
-              <strong>What's accurate:</strong> All total numbers (137,039 stable, 38,761 increases, 44,756 decreases, 220,556 total) match the published research exactly.<br/>
-              <strong>What's estimated:</strong> The specific breakdown showing how many clinicians in each baseline volume category ended up in each outcome category. The research does not provide this cross-tabulation.<br/>
-              <strong>Estimation basis:</strong> Distribution reflects the research finding that "higher baseline volumes significantly predict greater stability," with percentages proportionally calculated to match exact research totals.
-            </p>
-          </InsightCard>
+          {/* Cross-tabulation Table */}
+          <TableWrapper style={{ marginTop: '30px' }}>
+            <DataTable>
+              <thead>
+                <tr>
+                  <th>Baseline Volume Category</th>
+                  <th>Major Increases</th>
+                  <th>Major Decreases</th>
+                  <th>Stable Volume</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1 to 10</strong></td>
+                  <td className="number-cell">15,359</td>
+                  <td className="number-cell">16,027</td>
+                  <td className="number-cell">11,360</td>
+                </tr>
+                <tr>
+                  <td><strong>11 to 50</strong></td>
+                  <td className="number-cell">12,019</td>
+                  <td className="number-cell">10,860</td>
+                  <td className="number-cell">24,628</td>
+                </tr>
+                <tr>
+                  <td><strong>51 to 100</strong></td>
+                  <td className="number-cell">5,123</td>
+                  <td className="number-cell">5,644</td>
+                  <td className="number-cell">20,756</td>
+                </tr>
+                <tr>
+                  <td><strong>100 or more</strong></td>
+                  <td className="number-cell">6,360</td>
+                  <td className="number-cell">14,225</td>
+                  <td className="number-cell">89,101</td>
+                </tr>
+              </tbody>
+            </DataTable>
+          </TableWrapper>
 
-          <InsightCard bgColor="#E3F2FD" borderColor="#0072B2" style={{ marginTop: '20px' }}>
+          <InsightCard bgColor="#E3F2FD" borderColor="#0072B2" style={{ marginTop: '25px' }}>
             <h4>Key Predictors of Stability</h4>
             <p>
-              Clinicians serving more than 100 Medicaid patients at baseline were significantly more likely to maintain stable participation. Community Health Center affiliation was associated with greater stability and higher odds of increases. Conversely, rural practice settings were linked to higher odds of major decreases in enrollee volume.
+              Clinicians serving more than 100 Medicaid patients at baseline were significantly more likely to maintain stable participation.
             </p>
           </InsightCard>
         </div>
@@ -1573,8 +1560,8 @@ const SinglePagePamphlet = () => {
         {/* Header */}
         <Header>
           <HeaderLeft>
-            <MainTitle>Medicaid Clinician Participation Dynamics</MainTitle>
-            <Subtitle>Longitudinal Analysis of Primary Care Provider Engagement (2016-2019)</Subtitle>
+            <MainTitle>Novel Methods for Tracking Primary Care Providers' Medicaid Participation</MainTitle>
+            <Subtitle>Longitudinal Analysis of Primary Care Providers' Medicaid Participation (2016-2019)</Subtitle>
           </HeaderLeft>
           <HeaderRight>
             <HeaderStat>
@@ -1596,16 +1583,16 @@ const SinglePagePamphlet = () => {
           {/* Key Participation Patterns */}
           <StatsRow>
             <StatCard>
-              <StatNumber>60%</StatNumber>
-              <StatLabel>Stable Volume</StatLabel>
+              <StatNumber>62%</StatNumber>
+              <StatLabel>Providers Had Stable Volume</StatLabel>
             </StatCard>
             <StatCard>
               <StatNumber>70%</StatNumber>
-              <StatLabel>Peds Stable</StatLabel>
+              <StatLabel>Pediatricians Had Stable Volume</StatLabel>
             </StatCard>
             <StatCard>
               <StatNumber>68%</StatNumber>
-              <StatLabel>OBGYNs Stable</StatLabel>
+              <StatLabel>OBGYNs Had Stable Volume</StatLabel>
             </StatCard>
           </StatsRow>
 
@@ -1632,21 +1619,23 @@ const SinglePagePamphlet = () => {
             <Section>
               <SectionTitle>Study Overview</SectionTitle>
               <InfoText style={{ marginBottom: '12px' }}>
-                This longitudinal analysis tracked 220,556 primary care clinicians across 40 states
-                from 2016 to 2019, examining changes in Medicaid participation patterns. The study
-                used T-MSIS Analytic Files to measure changes in the number of unique Medicaid
-                enrollees served annually, with major changes defined as variations exceeding 90%
-                of baseline enrollee volume.
+                This longitudinal analysis tracked 220,556 primary care clinicians across 40 states from 2016 to 2019, examining changes in Medicaid participation patterns. It used data from T-MSIS Analytic Files (TAF) to measure changes in the number of unique Medicaid enrollees served annually.
+              </InfoText>
+              <InfoText style={{ marginBottom: '12px' }}>
+                Major changes were defined as those exceeding 90% of baseline enrollee volume.
+              </InfoText>
+              <InfoText style={{ marginBottom: '12px' }}>
+                <strong>More than 90% increase from the baseline = major increase</strong><br/>
+                <strong>More than 90% decrease from the baseline = major decrease</strong>
               </InfoText>
             </Section>
 
             <Section>
               <SectionTitle>Key Findings</SectionTitle>
               <KeyPoints>
-                <KeyPoint>62.1% of clinicians maintained stable Medicaid enrollee volumes</KeyPoint>
-                <KeyPoint>37.9% experienced substantial changes in participation</KeyPoint>
-                <KeyPoint>Pediatricians (70%) and OBGYNs (68%) showed greatest stability</KeyPoint>
-                <KeyPoint>NPs (26%) and PAs (24%) had highest rates of major decreases</KeyPoint>
+                <KeyPoint>Around 62% of clinicians maintained stable Medicaid enrollee volumes, while around 38% experienced substantial changes in participation</KeyPoint>
+                <KeyPoint>Pediatricians and OBGYNs showed greatest stability; NPs and PAs had highest rates of major decreases</KeyPoint>
+                <KeyPoint>Higher proportion of providers practicing in CHCs maintained stable volumes</KeyPoint>
                 <KeyPoint>Higher baseline volume strongly predicted stability</KeyPoint>
               </KeyPoints>
             </Section>
@@ -1654,11 +1643,9 @@ const SinglePagePamphlet = () => {
             <Section>
               <SectionTitle>Policy Implications</SectionTitle>
               <KeyPoints>
-                <KeyPoint>Access to care may be more volatile than previously understood</KeyPoint>
-                <KeyPoint>Need to support consistent clinician engagement with Medicaid</KeyPoint>
-                <KeyPoint>CHCs play crucial role in maintaining stable provider networks</KeyPoint>
-                <KeyPoint>Rural areas require targeted workforce retention strategies</KeyPoint>
-                <KeyPoint>Track participation trends as Medicaid faces potential changes</KeyPoint>
+                <KeyPoint>To ensure stable access for Medicaid enrollees, incentivizing consistent Medicaid participation is critical</KeyPoint>
+                <KeyPoint>Strengthening community health centers is essential for stabilizing access</KeyPoint>
+                <KeyPoint>To guide responsive workforce planning, states should track provider-level participation trends and consider variations by specialty/profession</KeyPoint>
               </KeyPoints>
             </Section>
           </ThreeColumnGrid>
@@ -1670,7 +1657,7 @@ const SinglePagePamphlet = () => {
             <strong>Research Study 2016-2019</strong> | Bodas, Luo & Vichare | George Washington University
           </FooterText>
           <PaperLink
-            href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11641827/"
+            href="https://www.mdpi.com/1660-4601/22/9/1339"
             target="_blank"
             rel="noopener noreferrer"
           >
